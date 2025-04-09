@@ -12,8 +12,29 @@ author_profile: true
 {% include base_path %}
 
 <!-- New style rendering if publication categories are defined -->
+<!--{% if site.publication_category %}-->
+<!--  {% for category in site.publication_category  %}-->
+<!--    {% assign title_shown = false %}-->
+<!--    {% for post in site.publications reversed %}-->
+<!--      {% if post.category != category[0] %}-->
+<!--        {% continue %}-->
+<!--      {% endif %}-->
+<!--      {% unless title_shown %}-->
+<!--        <h2>{{ category[1].title }}</h2><hr />-->
+<!--        {% assign title_shown = true %}-->
+<!--      {% endunless %}-->
+<!--      {% include archive-single.html %}-->
+<!--    {% endfor %}-->
+<!--  {% endfor %}-->
+<!--{% else %}-->
+<!--  {% for post in site.publications reversed %}-->
+<!--    {% include archive-single.html %}-->
+<!--  {% endfor %}-->
+<!--{% endif %}-->
+
+
 {% if site.publication_category %}
-  {% for category in site.publication_category  %}
+  {% for category in site.publication_category %}
     {% assign title_shown = false %}
     {% for post in site.publications reversed %}
       {% if post.category != category[0] %}
@@ -23,14 +44,33 @@ author_profile: true
         <h2>{{ category[1].title }}</h2><hr />
         {% assign title_shown = true %}
       {% endunless %}
-      {% include archive-single.html %}
+      <div style="display: flex; align-items: flex-start; margin-bottom: 20px; gap: 15px;">
+        <div style="flex: 2;">
+          {% include archive-single.html %}
+        </div>
+        <div style="flex: 1;">
+          {% if post.image %}
+            <img src="{{ post.image | prepend: base_path }}" alt="{{ post.title }}" style="width: 100%;">
+          {% else %}
+            <img src="/images/500x300.png" alt="Placeholder" style="width: 100%;">
+          {% endif %}
+        </div>
+      </div>
     {% endfor %}
   {% endfor %}
 {% else %}
   {% for post in site.publications reversed %}
-    {% include archive-single.html %}
+    <div style="display: flex; align-items: flex-start; margin-bottom: 20px; gap: 15px;">
+      <div style="flex: 2;">
+        {% include archive-single.html %}
+      </div>
+      <div style="flex: 1;">
+        {% if post.image %}
+          <img src="{{ post.image | prepend: base_path }}" alt="{{ post.title }}" style="width: 100%;">
+        {% else %}
+          <img src="/images/500x300.png" alt="Placeholder" style="width: 100%;">
+        {% endif %}
+      </div>
+    </div>
   {% endfor %}
 {% endif %}
-
-
-

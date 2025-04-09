@@ -1,0 +1,22 @@
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+  <tr>
+    <td style="width: 70%; vertical-align: top; padding-right: 15px;">
+      <h3><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h3>
+      <p class="page__meta">Published in {{ post.venue }}, {{ post.date | default: "1900-01-01" | date: "%Y" }}</p>
+      <p>{{ post.excerpt | strip_html }}</p>
+      {% if post.citation %}<p>Recommended citation: {{ post.citation }}</p>{% endif %}
+      <p class="publication-links">
+        {% if post.paperurl %}<a href="{{ post.paperurl }}">Download Paper</a>{% endif %}
+        {% if post.slideurl %}{% if post.paperurl %} | {% endif %}<a href="{{ post.slideurl }}">Download Slides</a>{% endif %}
+        {% if post.bibtexurl %}{% if post.paperurl or post.slideurl %} | {% endif %}<a href="{{ post.bibtexurl }}">Download Bibtex</a>{% endif %}
+      </p>
+    </td>
+    <td style="width: 30%; vertical-align: top; text-align: center;">
+      {% if post.image %}
+        <img src="{{ post.image | prepend: base_path }}" alt="{{ post.title }}" style="max-width: 100%;">
+      {% else %}
+        <img src="/images/500x300.png" alt="Placeholder" style="max-width: 100%;">
+      {% endif %}
+    </td>
+  </tr>
+</table>
