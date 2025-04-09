@@ -184,6 +184,11 @@ exclude:
   - README
   - tmp
   - vendor
+  - _pages/cv.md
+  - _pages/publications.html
+  - _pages/talks.html
+  - _pages/teaching.html
+  - _pages/portfolio.html
 keep_files:
   - .git
   - .svn
@@ -214,16 +219,16 @@ kramdown:
 # These settings control the types of collections used by the template
 collections:
   teaching:
-    output: true
+    output: false
     permalink: /:collection/:path/
   publications:
-    output: true
+    output: false
     permalink: /:collection/:path/
   portfolio:
-    output: true
+    output: false
     permalink: /:collection/:path/
   talks:
-    output: true
+    output: false
     permalink: /:collection/:path/
 
 

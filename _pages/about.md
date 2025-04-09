@@ -1,7 +1,8 @@
 ---
 permalink: /
-title: "About me"
-excerpt: "About me"
+title: "About Me"
+page_title: "Zhanyu Yang's Homepage"
+excerpt: ""
 author_profile: true
 redirect_from: 
   - /about/
@@ -19,13 +20,13 @@ Before joining Purdue, I completed my undergraduate studies at the University of
 {% for post in publications %}
 <div style="display: flex; margin-bottom: 30px;">
   <div style="flex: 3; padding-right: 20px;">
-    <h3><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h3>
+    <h3><strong>{{ post.title }}</strong></h3>
     <p>{{ post.excerpt }}</p>
     {% if post.citation %}<p>{{ post.citation }}</p>{% endif %}
     <p>
-      {% if post.paperurl %}<a href="{{ post.paperurl }}">Download Paper</a>{% endif %}
-      {% if post.slideurl %}{% if post.paperurl %} | {% endif %}<a href="{{ post.slideurl }}">Download Slides</a>{% endif %}
-      {% if post.bibtexurl %}{% if post.paperurl or post.slideurl %} | {% endif %}<a href="{{ post.bibtexurl }}">Download Bibtex</a>{% endif %}
+      {% if post.paperurl %}<a href="{{ post.paperurl }}">Paper</a>{% endif %}
+      {% if post.videourl %}{% if post.videourl %} | {% endif %}<a href="{{ post.videourl }}">Video</a>{% endif %}
+      {% if post.bibtexurl %}{% if post.paperurl or post.slideurl %} | {% endif %}<a href="{{ post.bibtexurl }}">Bibtex</a>{% endif %}
     </p>
   </div>
   <div style="flex: 2; text-align: center; align-self: center;">
