@@ -10,9 +10,9 @@ redirect_from:
 ---
 
 <!-- This is an empty line after the front matter -->
-Welcome to my homepage! My name is Zhanyu Yang, and I am a third-year PhD student in the Department of Computer Science at Purdue University. I am fortunate to be advised by [Prof. Bedrich Benes](https://www.cs.purdue.edu/homes/bbenes/). My research interests lie in the field of computer graphics, with a particular focus on physical simulation and procedural modeling.
+Welcome to my homepage! My name is Zhanyu Yang. I am a PhD student in the Department of Computer Science at Purdue University, fortunately advised by [Prof. Bedrich Benes](https://www.cs.purdue.edu/homes/bbenes/). My research interests lie in the field of computer graphics, with a particular focus on physical simulation and procedural modeling.
 
-Before joining Purdue, I completed my undergraduate studies at the University of Science and Technology of China (USTC), where I earned a Bachelor of Science degree in Applied & Computational Mathematics. During my time at USTC, I was honored with the Outstanding Undergraduate Student Award and Outstanding Undergraduate Thesis Award. 
+Before joining Purdue, I completed my undergraduate studies at the University of Science and Technology of China (USTC) in 2022, where I earned a Bachelor of Science degree in Applied & Computational Mathematics. During my time at USTC, I was honored with the Outstanding Undergraduate Student Award and Outstanding Undergraduate Thesis Award. 
 
 ## Publications
 
