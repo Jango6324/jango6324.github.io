@@ -24,9 +24,10 @@ Before joining Purdue, I completed my undergraduate studies at the University of
     <p>{{ post.excerpt }}</p>
     {% if post.citation %}<p>{{ post.citation }}</p>{% endif %}
     <p>
-      {% if post.paperurl %}<a href="{{ post.paperurl }}">Paper</a>{% endif %}
-      {% if post.videourl %}{% if post.videourl %} | {% endif %}<a href="{{ post.videourl }}">Video</a>{% endif %}
-      {% if post.bibtexurl %}{% if post.paperurl or post.slideurl %} | {% endif %}<a href="{{ post.bibtexurl }}">Bibtex</a>{% endif %}
+      {% if post.projecturl %}<a href="{{ post.projecturl }}">Project Page</a>{% endif %}
+      {% if post.paperurl %}{% if post.projecturl %} | {% endif %}<a href="{{ post.paperurl }}">Paper</a>{% endif %}
+      {% if post.videourl %}{% if post.paperurl %} | {% endif %}<a href="{{ post.videourl }}">Video</a>{% endif %}
+      {% if post.bibtexurl %}{% if post.videourl %} | {% endif %}<a href="{{ post.bibtexurl }}">Bibtex</a>{% endif %}
     </p>
   </div>
   <div style="flex: 2; text-align: center; align-self: center;">

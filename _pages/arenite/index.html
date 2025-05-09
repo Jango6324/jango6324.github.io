@@ -1,0 +1,300 @@
+---
+permalink: /arenite/
+layout: none
+---
+
+{% include base_path %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags remain the same -->
+
+  <title>Arenite: A Physics-based Sandstone Simulator</title>
+  <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}/files/arenite/images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <!-- Your CSS references -->
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/bulma.min.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/index.css">
+
+  <!-- Your JS references -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="{{ site.baseurl }}/assets/arenite/js/fontawesome.all.min.js"></script>
+  <script src="{{ site.baseurl }}/assets/arenite/js/bulma-carousel.min.js"></script>
+  <script src="{{ site.baseurl }}/assets/arenite/js/bulma-slider.min.js"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script src="{{ site.baseurl }}/assets/arenite/js/index.js"></script>
+</head>
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="xtitle is-1 publication-title">Arenite: A Physics-based Sandstone Simulator</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <a href="https://jango6324.github.io/" target="_blank">Zhanyu Yang</a><sup>1</sup></span>
+                <span class="author-block">
+                  <a href="https://aryamaanjain.github.io/" target="_blank">Aryamaan Jain</a><sup>2</sup></span>
+                  <span class="author-block">
+                    <a href="https://www-sop.inria.fr/members/Guillaume.Cordonnier/" target="_blank">Guillaume Cordonnier</a><sup>2</sup></span>
+                    <span class="author-block">
+                    <a href="https://www.lix.polytechnique.fr/vista/vista-member/marie-paule_cani/" target="_blank">Marie-Paule Cani</a><sup>3</sup></span>
+                      <span class="author-block">
+                    <a href="Fifth AUTHOR PERSONAL LINK" target="_blank">Zhaopeng Wang</a><sup>1</sup></span>
+                        <span class="author-block">
+                    <a href="https://www.cs.purdue.edu/homes/bbenes/" target="_blank">Bedrich Benes</a><sup>1</sup></span>
+                  </span>
+                  </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <span class="author-block"><small><br><sup>1</sup>Purdue University, USA
+                      <br><sup>2</sup>Inria, Université Côte d’Azur, France
+                        <br><sup>3</sup>Ecole Polytechnique, CNRS (LIX), IP Paris, France</small></span>
+                        <br><span class="publication-venue">ACM Transaction on Graphics, Vol. 44, No.4 (SIGGRAPH 2025)</span>
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                         <!-- Arxiv PDF link -->
+                      <span class="link-block">
+                        <a href="PLACEHOLDER" target="_blank"
+                        class="external-link ">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper (Incoming)</span>
+                      </a>
+                    </span>
+
+
+<!--                  &lt;!&ndash; Github link &ndash;&gt;-->
+<!--                  <span class="link-block">-->
+<!--                    <a href="https://github.com/YOUR REPO HERE" target="_blank"-->
+<!--                    class="external-link ">-->
+<!--                    <span class="icon">-->
+<!--                      <i class="fab fa-github"></i>-->
+<!--                    </span>-->
+<!--                    <span>Code</span>-->
+<!--                  </a>-->
+<!--                </span>-->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="{{ site.baseurl }}/files/arenite/images/teaser_fog.jpg" alt="MY ALT TEXT"/>
+      <h2 class="subtitle has-text-centered">
+        A large sandstone structure generated by Arenite. The user defines simple initial conditions of each object (layer hardness and vegetation), and the physics-based simulation generates the results.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End teaser video -->
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We introduce Arenite, a novel physics-based approach for modeling sandstone structures. The key insight of our work is that simulating a combination of stress and multi-factor erosion enables the generation of a wide variety of sandstone structures observed in nature. We isolate the key shape-forming phenomena: multi-physics fabric interlocking, wind and fluvial erosion, and particle-based deposition processes. Complex 3D structures such as arches, alcoves, hoodoos, or buttes can be achieved by creating simple 3D structures with user-painted erodable areas and vegetation and running the simulation. We demonstrate the algorithm on a wide variety of structures, and our GPU-based implementation achieves the simulation in less than 5 minutes on a desktop computer for our most complex example.
+          </p>
+        </div>
+        <h2 class="title is-3">Overview</h2>
+        <img src="{{ site.baseurl }}/files/arenite/images/overview.png" alt="MY ALT TEXT" style="width: 70%; display: block; margin: 0 auto;"/>
+        <div class="content has-text-justified">
+          <p>
+            <br>
+            Arenite overview: The rough input shape has some areas painted by the user (viability, vegetation) and is converted into particles in a grid. Stress distribution is calculated, and erodibility is determined. The wind and fluvial erosion then modify the shape, and some material is deposited, which results in the final shape.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- Image sandstone -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3">Real Sandstone Structure Simulation</h2>
+      <div id="results-sandstone" class="carousel results-carousel">
+       <div class="item">
+        <!-- Your image here -->
+        <img src="{{ site.baseurl }}/files/arenite/images/arch.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          Arch
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="{{ site.baseurl }}/files/arenite/images/mushroom.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          Mushroom
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="{{ site.baseurl }}/files/arenite/images/arcade.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+         Arcade
+       </h2>
+     </div>
+     <div class="item">
+      <!-- Your image here -->
+      <img src="{{ site.baseurl }}/files/arenite/images/alcove.png" alt="MY ALT TEXT"/>
+      <h2 class="subtitle has-text-centered">
+        Alcove
+      </h2>
+    </div>
+        <div class="item">
+      <!-- Your image here -->
+      <img src="{{ site.baseurl }}/files/arenite/images/butte.png" alt="MY ALT TEXT"/>
+      <h2 class="subtitle has-text-centered">
+        Butte
+      </h2>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+<!-- End image carousel -->
+
+
+<!-- Other Examples -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3">Other Results</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item">
+          <img src="{{ site.baseurl }}/files/arenite/images/canyon&cave.png" alt="MY ALT TEXT"/>
+          <h2 class="subtitle has-text-centered">
+          Simulation of cave network (left) and sandstone canyon (right).
+          </h2>
+        </div>
+        <div class="item">
+          <img src="{{ site.baseurl }}/files/arenite/images/skull.png" alt="MY ALT TEXT"/>
+          <h2 class="subtitle has-text-centered">
+          User interaction: A lightly eroded rock cube (left) is marked at three locations by the user and eroded. Then the user added two cylinders on the top and eroded again.
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End video carousel -->
+
+<!-- Youtube video -->
+<section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <!-- Paper video. -->
+      <h2 class="title is-3">Supplementary Video</h2>
+<!--      <div class="columns is-centered has-text-centered">-->
+<!--        <div class="column is-four-fifths">-->
+<!--          -->
+<!--          <div class="publication-video">-->
+<!--            &lt;!&ndash; Youtube embed code here &ndash;&gt;-->
+<!--            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
+<!--          </div>-->
+<!--        </div>-->
+        <div class="content has-text-justified">
+          <p>
+            <br>
+            Coming soon!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End youtube video -->
+
+
+
+
+
+<!-- Paper poster 
+<section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title">Poster</h2>
+
+      <iframe  src="{{ site.baseurl }}/files/arenite/pdfs/sample.pdf" width="100%" height="550">
+          </iframe>
+        
+      </div>
+    </div>
+  </section>
+End paper poster -->
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>BibTex Code Here</code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/vinthony/project-page-template">modification version</a> of <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> from <a href="https://github.com/vinthony">vinthony</a>.
+            <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
