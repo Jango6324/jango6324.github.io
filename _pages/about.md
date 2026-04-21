@@ -41,6 +41,8 @@ Before joining Purdue, I completed my undergraduate studies at the University of
 <hr>
 {% endfor %}
 
+<p style="text-align: right; color: #aaa; font-size: 0.9em;">* indicates equal contribution.</p>
+
 Misc
 ------
 I like sports, especially volleyball and tennis. I was a core member of the USTC volleyball team and participated in multiple Anhui Provincial College Tournaments. In Purdue, I won the champion of Purdue's Indoor Volleyball League for Grad/Fac/Staff.
