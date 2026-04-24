@@ -1,0 +1,209 @@
+---
+layout: compress
+---
+
+{% include base_path %}
+{% assign author = site.author %}
+
+<!doctype html>
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js"{% if site.site_theme == "dark" %} data-theme="dark"{% endif %}>
+  <head>
+    {% include head.html %}
+    {% include head/custom.html %}
+  </head>
+
+  <body class="home-custom-body">
+    {% include browser-upgrade.html %}
+
+    <div class="home-custom-wrap" role="main">
+      <aside class="home-sidebar" aria-label="Profile sidebar">
+        <div class="home-sidebar__card">
+          <img
+            class="home-sidebar__avatar"
+            src="{{ base_path }}/assets/images/profile.jpg"
+            alt="{{ author.name }}"
+            onerror="this.onerror=null;this.src='{{ base_path }}/images/profile.png';"
+          >
+
+          <h1 class="home-sidebar__name">Zhanyu Yang</h1>
+          <p class="home-sidebar__name-cn">{{ page.cn_name | default: "杨瞻宇" }}</p>
+          <p class="home-sidebar__role">{{ page.sidebar_role | default: "PhD Student in Computer Science" }}</p>
+          <p class="home-sidebar__org">{{ author.employer | default: "Purdue University" }}</p>
+
+          <nav class="home-sidebar__nav" aria-label="Sidebar links">
+            <a class="is-active" href="{{ base_path }}/"><i class="fa-solid fa-house"></i><span>Home</span></a>
+            <a href="{{ base_path }}/arenite/"><i class="fa-solid fa-mountain"></i><span>Arenite Project</span></a>
+            <a href="https://www.purdue.edu" target="_blank" rel="noopener"><i class="fa-solid fa-building-columns"></i><span>{{ author.employer | default: "Purdue University" }}</span></a>
+            {% if author.email %}
+              <a href="mailto:{{ author.email }}"><i class="fa-solid fa-envelope"></i><span>Email</span></a>
+            {% endif %}
+            {% if author.orcid %}
+              <a href="{{ author.orcid }}" target="_blank" rel="noopener"><i class="ai ai-orcid"></i><span>ORCID</span></a>
+            {% endif %}
+            {% if author.linkedin %}
+              <a href="https://www.linkedin.com/in/{{ author.linkedin }}" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span></a>
+            {% endif %}
+            {% if author.github %}
+              <a href="https://github.com/{{ author.github }}" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i><span>GitHub</span></a>
+            {% endif %}
+            {% if author.steam %}
+              <a href="https://steamcommunity.com/profiles/{{ author.steam }}" target="_blank" rel="noopener"><i class="fa-brands fa-steam"></i><span>Steam</span></a>
+            {% endif %}
+          </nav>
+
+          <div class="home-sidebar__footer">
+            <p>&copy; {{ "now" | date: "%Y" }} Zhanyu Yang<br>All rights reserved.</p>
+            <img
+              class="home-sidebar__mascot"
+              src="{{ base_path }}/assets/images/mascot/game.png"
+              alt="Mascot"
+              onerror="this.onerror=null;this.style.display='none';"
+            >
+          </div>
+        </div>
+      </aside>
+
+      <div class="home-main">
+        <section class="home-hero card">
+          <div class="home-hero__header">
+            <span class="home-hero__pill">Welcome! 👋</span>
+            <a class="home-hero__cv" href="{{ page.cv_link | default: '/files/arenite/Arenite.pdf' | prepend: base_path }}">CV (PDF)</a>
+          </div>
+
+          <div class="home-hero__content">
+            <div class="home-hero__text">
+              <h2>Hi, I’m Zhanyu!</h2>
+              <p>
+                I’m a PhD student in the Department of Computer Science at Purdue University,
+                advised by <a href="https://www.cs.purdue.edu/homes/bbenes/" target="_blank" rel="noopener">Prof. Bedrich Benes</a>.
+              </p>
+              <p>
+                My research interests lie in computer graphics, with a particular focus on physical simulation
+                and procedural modeling.
+              </p>
+
+              <div class="home-hero__chips">
+                <span><i class="fa-solid fa-graduation-cap"></i> PhD Student</span>
+                <span><i class="fa-solid fa-building-columns"></i> Purdue University</span>
+                <span><i class="fa-solid fa-location-dot"></i> Indiana, USA</span>
+              </div>
+            </div>
+
+            <div class="home-hero__mascot-wrap">
+              <img
+                class="home-hero__mascot"
+                src="{{ base_path }}/assets/images/mascot/hero.png"
+                alt="Hero mascot"
+                onerror="this.onerror=null;this.style.display='none';"
+              >
+            </div>
+          </div>
+        </section>
+
+        <section class="home-awards card">
+          <div class="home-awards__list">
+            {% for item in site.data.home_awards %}
+              <article class="home-awards__item">
+                <div class="home-awards__icon"><i class="fa-solid {{ item.icon | default: 'fa-award' }}"></i></div>
+                <div>
+                  <h3>{{ item.title }}</h3>
+                  <p>{{ item.subtitle }}</p>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+          <img
+            class="home-awards__peek"
+            src="{{ base_path }}/assets/images/mascot/award-peek.png"
+            alt="Mascot peeking"
+            onerror="this.onerror=null;this.style.display='none';"
+          >
+        </section>
+
+        <section class="home-section card">
+          <div class="home-section__title-row">
+            <h2>Selected Publications</h2>
+            <a href="{{ base_path }}/arenite/">View Arenite project <span aria-hidden="true">→</span></a>
+          </div>
+
+          <div class="home-publications">
+            {% for pub in site.data.home_publications %}
+              <article class="home-publication-card">
+                <img
+                  src="{{ pub.image | prepend: base_path }}"
+                  alt="{{ pub.title }}"
+                  onerror="this.onerror=null;this.src='{{ base_path }}/images/500x300.png';"
+                >
+                <div class="home-publication-card__body">
+                  <h3>{{ pub.title }}</h3>
+                  <p class="authors">{{ pub.authors }}</p>
+                  <p class="venue">{{ pub.venue }}</p>
+                  {% if pub.award %}
+                    <p class="award">🏆 {{ pub.award }}</p>
+                  {% endif %}
+
+                  <p class="links">
+                    {% if pub.project_url %}<a href="{{ pub.project_url | prepend: base_path }}">Project Page</a>{% endif %}
+                    {% if pub.paper_url %}{% if pub.project_url %} | {% endif %}<a href="{{ pub.paper_url }}">Paper</a>{% endif %}
+                    {% if pub.video_url %}{% if pub.paper_url or pub.project_url %} | {% endif %}<a href="{{ pub.video_url }}">Video</a>{% endif %}
+                    {% if pub.bibtex_url %}{% if pub.video_url or pub.paper_url or pub.project_url %} | {% endif %}<a href="{{ pub.bibtex_url | prepend: base_path }}">BibTeX</a>{% endif %}
+                  </p>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="home-section card">
+          <div class="home-section__title-row">
+            <h2>News & Updates</h2>
+            <a href="{{ base_path }}/arenite/">Project page <span aria-hidden="true">→</span></a>
+          </div>
+
+          <div class="home-news">
+            {% for item in site.data.home_news %}
+              <article class="home-news__item">
+                <time datetime="{{ item.date }}">{{ item.date | date: "%b %-d, %Y" }}</time>
+                <p>{{ item.text }}</p>
+              </article>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="home-section card">
+          <h2>Misc / Interests</h2>
+          <div class="home-misc">
+            <div class="home-misc__text">
+              <p>
+                I like sports, especially volleyball and tennis. I was a core member of the USTC volleyball team and
+                participated in multiple Anhui Provincial College Tournaments. In Purdue, I won the champion of
+                Purdue’s Indoor Volleyball League for Grad/Fac/Staff.
+              </p>
+              <p>
+                I also enjoy playing video games. I am a big fan of action games and RPGs such as Monster Hunter and
+                Souls-like games.
+              </p>
+            </div>
+            <div class="home-misc__images">
+              <img
+                src="{{ base_path }}/assets/images/misc/volleyball.jpg"
+                alt="Volleyball"
+                onerror="this.onerror=null;this.src='{{ base_path }}/images/volleyball.png';"
+              >
+              <div>
+                <img
+                  src="{{ base_path }}/assets/images/misc/swine.jpg"
+                  alt="Swine"
+                  onerror="this.onerror=null;this.src='{{ base_path }}/images/daimao.jpg';"
+                >
+                <p>Courtesy of Swine, Baidu Tieba</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    {% include scripts.html %}
+  </body>
+</html>
