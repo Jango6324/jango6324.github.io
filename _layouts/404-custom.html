@@ -1,0 +1,134 @@
+---
+layout: compress
+---
+
+{% include base_path %}
+{% assign author = site.author %}
+
+<!doctype html>
+<html lang="{{ site.locale | default: 'en-US' | slice: 0,2 }}" class="no-js"{% if site.site_theme == "dark" %} data-theme="dark"{% endif %}>
+  <head>
+    {% include head.html %}
+    {% include head/custom.html %}
+    <link rel="stylesheet" href="{{ base_path }}/assets/css/404.css">
+  </head>
+
+  <body class="zy-home-body error-custom-body">
+    {% include browser-upgrade.html %}
+
+    <div class="zy-shell error-shell" role="main">
+      <aside class="zy-sidebar" aria-label="Profile sidebar">
+        <div class="zy-sidebar__inner">
+          <a class="zy-avatar-ring" href="{{ '/' | relative_url }}" aria-label="Home">
+            <img class="zy-avatar" src="{{ '/images/profile.png' | relative_url }}" alt="{{ author.name | default: site.name }}">
+          </a>
+
+          <div class="zy-id-block">
+            <h1>Zhanyu Yang</h1>
+            <p class="zy-cn-name">{{ page.cn_name | default: '杨瞻宇' }}</p>
+            <p class="zy-role">{{ page.sidebar_role | default: 'PhD Candidate in Computer Science' }}</p>
+            <p class="zy-org">{{ author.employer | default: 'Purdue University' }}</p>
+          </div>
+
+          <nav class="zy-side-nav" aria-label="Sidebar links">
+            <a href="{{ '/' | relative_url }}"><i class="fa-solid fa-house"></i><span>Home</span></a>
+            {% if author.email %}<a href="mailto:{{ author.email }}"><i class="fa-solid fa-envelope"></i><span>Email</span></a>{% endif %}
+            {% if author.orcid %}<a href="{{ author.orcid }}" target="_blank" rel="noopener"><i class="ai ai-orcid"></i><span>ORCID</span></a>{% endif %}
+            {% if author.linkedin %}<a href="https://www.linkedin.com/in/{{ author.linkedin }}" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span></a>{% endif %}
+            {% if author.github %}<a href="https://github.com/{{ author.github }}" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i><span>GitHub</span></a>{% endif %}
+            {% if author.steam %}<a href="https://steamcommunity.com/profiles/{{ author.steam }}" target="_blank" rel="noopener"><i class="fa-brands fa-steam"></i><span>Steam</span></a>{% endif %}
+          </nav>
+
+          <div class="zy-sidebar__spacer"></div>
+
+          <div class="zy-sidebar__footer" data-scroll-shift-max="650" data-scroll-shift-speed="0.9">
+            <p>&copy; {{ 'now' | date: '%Y' }} Zhanyu Yang<br>All rights reserved.</p>
+            <img class="zy-game-mascot" src="{{ '/images/mascot/hero-connect-2.png' | relative_url }}" alt="">
+          </div>
+        </div>
+      </aside>
+
+      <main class="zy-main error-main" aria-label="404 page">
+        <section class="error-panel zy-card">
+          <div class="error-copy">
+            <p class="error-eyebrow">404 / Under construction</p>
+            <h1>Oops, this page is<br>still under construction.</h1>
+            <p class="error-subtitle">The page you’re looking for is not available yet,<br>but it may appear soon.</p>
+            <div class="error-actions" aria-label="404 navigation">
+              <a class="error-button error-button--primary" href="{{ '/' | relative_url }}"><i class="fa-solid fa-house"></i> Back to Home</a>
+            </div>
+          </div>
+
+          <div class="error-visual" aria-hidden="true">
+            <img class="error-hero" src="{{ '/images/mascot/hero-stop-combined.png' | relative_url }}" alt="">
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        var root = document.querySelector('.zy-sidebar__inner');
+        var footer = document.querySelector('.zy-sidebar__footer');
+        var shell = document.querySelector('.zy-shell');
+        if (!root || !footer || !shell) return;
+
+        var maxShift = parseFloat(footer.getAttribute('data-scroll-shift-max')) || 180;
+        var speed = parseFloat(footer.getAttribute('data-scroll-shift-speed')) || 0.22;
+        var bottomSafeGap = 10;
+        var lowerHalfTargetRatio = 0.62;
+        var ticking = false;
+
+        function updateFooterShift() {
+          var isMobile = window.matchMedia('(max-width: 900px)').matches;
+          var shift = 0;
+
+          if (!isMobile) {
+            var doc = document.documentElement;
+            var scrollableY = Math.max(0, doc.scrollHeight - window.innerHeight);
+            var pageFullyVisible = doc.scrollHeight <= window.innerHeight + 2;
+            var adaptiveMaxShift = Math.min(maxShift, Math.max(80, scrollableY * speed * 0.65 + window.innerHeight * 0.08));
+
+            if (pageFullyVisible) {
+              adaptiveMaxShift = Math.min(adaptiveMaxShift, Math.max(72, window.innerHeight * 0.12));
+            }
+
+            var scrollShift = Math.max(0, window.scrollY * speed);
+            var rootRect = root.getBoundingClientRect();
+            var footerTopBase = rootRect.top + footer.offsetTop;
+            var footerBottomBase = footerTopBase + footer.offsetHeight;
+
+            var predictedBottom = footerBottomBase + scrollShift;
+            var bottomGap = window.innerHeight - predictedBottom - bottomSafeGap;
+            var alignShift = Math.max(0, bottomGap);
+
+            var predictedTop = footerTopBase + scrollShift + alignShift;
+            var lowerHalfTargetTop = window.innerHeight * lowerHalfTargetRatio;
+            var lowerHalfShift = pageFullyVisible ? Math.max(0, lowerHalfTargetTop - predictedTop) : 0;
+            var proposedShift = Math.min(adaptiveMaxShift, scrollShift + alignShift + lowerHalfShift);
+
+            var shellRect = shell.getBoundingClientRect();
+            var shellBoundMaxShift = Math.max(0, shellRect.bottom - bottomSafeGap - footerBottomBase);
+            shift = Math.min(proposedShift, shellBoundMaxShift);
+          }
+
+          root.style.setProperty('--zy-footer-shift', shift.toFixed(1) + 'px');
+          ticking = false;
+        }
+
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          window.requestAnimationFrame(updateFooterShift);
+        }
+
+        updateFooterShift();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        window.addEventListener('load', onScroll);
+      })();
+    </script>
+
+    {% include scripts.html %}
+  </body>
+</html>

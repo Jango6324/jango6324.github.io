@@ -5,6 +5,9 @@ layout: compress
 {% include base_path %}
 {% assign author = site.author %}
 {% assign cv_href = page.cv_link | default: '/cv/' | relative_url %}
+{% assign publications_href = '/arenite/' | relative_url %}
+{% assign unavailable_href = '/404.html' | relative_url %}
+{% assign links_temporarily_closed = true %}
 
 <!doctype html>
 <html lang="{{ site.locale | slice: 0,2 }}" class="no-js"{% if site.site_theme == "dark" %} data-theme="dark"{% endif %}>
@@ -54,7 +57,7 @@ layout: compress
         <section class="zy-hero zy-card">
           <div class="zy-hero__topline">
             <span class="zy-welcome">Welcome! <span aria-hidden="true">👋</span></span>
-            <a class="zy-cv-button" href="{{ cv_href }}"><i class="fa-regular fa-file-lines"></i> CV</a>
+            <a class="zy-cv-button" href="{% if links_temporarily_closed %}{{ unavailable_href }}{% else %}{{ cv_href }}{% endif %}" data-intended-href="{{ cv_href }}"><i class="fa-regular fa-file-lines"></i> CV</a>
           </div>
 
           <div class="zy-hero__grid">
@@ -111,7 +114,7 @@ layout: compress
         <section class="zy-section" aria-labelledby="pubs-title">
           <div class="zy-section__heading">
             <h2 id="pubs-title"><i class="fa-regular fa-newspaper"></i> Publications</h2>
-            <a href="{{ '/arenite/' | relative_url }}">Full Publication List <span aria-hidden="true">→</span></a>
+            <a href="{% if links_temporarily_closed %}{{ unavailable_href }}{% else %}{{ publications_href }}{% endif %}" data-intended-href="{{ publications_href }}">Full Publication List <span aria-hidden="true">→</span></a>
           </div>
 
           <div class="zy-publications">
