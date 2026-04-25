@@ -1,11 +1,16 @@
-- title: "Outstanding UG Thesis Award"
-  subtitle: "USTC, 2022"
-  icon: "fa-trophy"
+# - title: "Outstanding UG Thesis Award"
+#   subtitle: "USTC, 2022"
+#   icon: "fa-trophy"
 
-- title: "Best Paper, Honorable Mention"
-  subtitle: "ACM SIGGRAPH Asia 2024 (2nd best paper)"
-  icon: "fa-medal"
+- icon: "fa-arrow-trend-up"
+  title: "Top Cited Article"
+  subtitle: "CGF / Wiley, 2024–2025"
 
 - title: "Champion, Indoor Volleyball League"
-  subtitle: "Purdue Grad/Fac/Staff"
+  subtitle: "Purdue IMLeague GFS, 2024"
   icon: "fa-volleyball"
+
+- title: "Best Paper, Honorable Mention"
+  subtitle: "SCA 2024 (2nd best paper)"
+  icon: "fa-medal"
+

@@ -4,6 +4,7 @@ layout: compress
 
 {% include base_path %}
 {% assign author = site.author %}
+{% assign cv_href = page.cv_link | default: '/cv/' | relative_url %}
 
 <!doctype html>
 <html lang="{{ site.locale | slice: 0,2 }}" class="no-js"{% if site.site_theme == "dark" %} data-theme="dark"{% endif %}>
@@ -12,197 +13,251 @@ layout: compress
     {% include head/custom.html %}
   </head>
 
-  <body class="home-custom-body">
+  <body class="zy-home-body">
     {% include browser-upgrade.html %}
 
-    <div class="home-custom-wrap" role="main">
-      <aside class="home-sidebar" aria-label="Profile sidebar">
-        <div class="home-sidebar__card">
-          <img
-            class="home-sidebar__avatar"
-            src="{{ base_path }}/assets/images/profile.jpg"
-            alt="{{ author.name }}"
-            onerror="this.onerror=null;this.src='{{ base_path }}/images/profile.png';"
-          >
+    <div class="zy-shell" role="main">
+      <aside class="zy-sidebar" aria-label="Profile sidebar">
+        <div class="zy-sidebar__inner">
+          <a class="zy-avatar-ring" href="{{ '/' | relative_url }}" aria-label="Home">
+            <img class="zy-avatar" src="{{ '/images/profile.png' | relative_url }}" alt="{{ author.name | default: site.name }}">
+          </a>
 
-          <h1 class="home-sidebar__name">Zhanyu Yang</h1>
-          <p class="home-sidebar__name-cn">{{ page.cn_name | default: "杨瞻宇" }}</p>
-          <p class="home-sidebar__role">{{ page.sidebar_role | default: "PhD Student in Computer Science" }}</p>
-          <p class="home-sidebar__org">{{ author.employer | default: "Purdue University" }}</p>
+          <div class="zy-id-block">
+            <h1>Zhanyu Yang</h1>
+            <p class="zy-cn-name">{{ page.cn_name | default: '杨瞻宇' }}</p>
+            <p class="zy-role">{{ page.sidebar_role | default: 'PhD Candidate in Computer Science' }}</p>
+            <p class="zy-org">{{ author.employer | default: 'Purdue University' }}</p>
+          </div>
 
-          <nav class="home-sidebar__nav" aria-label="Sidebar links">
-            <a class="is-active" href="{{ base_path }}/"><i class="fa-solid fa-house"></i><span>Home</span></a>
-            <a href="{{ base_path }}/arenite/"><i class="fa-solid fa-mountain"></i><span>Arenite Project</span></a>
-            <a href="https://www.purdue.edu" target="_blank" rel="noopener"><i class="fa-solid fa-building-columns"></i><span>{{ author.employer | default: "Purdue University" }}</span></a>
-            {% if author.email %}
-              <a href="mailto:{{ author.email }}"><i class="fa-solid fa-envelope"></i><span>Email</span></a>
-            {% endif %}
-            {% if author.orcid %}
-              <a href="{{ author.orcid }}" target="_blank" rel="noopener"><i class="ai ai-orcid"></i><span>ORCID</span></a>
-            {% endif %}
-            {% if author.linkedin %}
-              <a href="https://www.linkedin.com/in/{{ author.linkedin }}" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span></a>
-            {% endif %}
-            {% if author.github %}
-              <a href="https://github.com/{{ author.github }}" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i><span>GitHub</span></a>
-            {% endif %}
-            {% if author.steam %}
-              <a href="https://steamcommunity.com/profiles/{{ author.steam }}" target="_blank" rel="noopener"><i class="fa-brands fa-steam"></i><span>Steam</span></a>
-            {% endif %}
+          <nav class="zy-side-nav" aria-label="Sidebar links">
+            <a class="is-active" href="{{ '/' | relative_url }}"><i class="fa-solid fa-house"></i><span>Home</span></a>
+            <!-- <a href="{{ '/arenite/' | relative_url }}"><i class="fa-solid fa-mountain-sun"></i><span>Arenite Project</span></a> -->
+            <!-- <a href="https://www.purdue.edu" target="_blank" rel="noopener"><i class="fa-solid fa-building-columns"></i><span>Purdue University</span></a> -->
+            {% if author.email %}<a href="mailto:{{ author.email }}"><i class="fa-solid fa-envelope"></i><span>Email</span></a>{% endif %}
+            {% if author.orcid %}<a href="{{ author.orcid }}" target="_blank" rel="noopener"><i class="ai ai-orcid"></i><span>ORCID</span></a>{% endif %}
+            {% if author.linkedin %}<a href="https://www.linkedin.com/in/{{ author.linkedin }}" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span></a>{% endif %}
+            {% if author.github %}<a href="https://github.com/{{ author.github }}" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i><span>GitHub</span></a>{% endif %}
+            {% if author.steam %}<a href="https://steamcommunity.com/profiles/{{ author.steam }}" target="_blank" rel="noopener"><i class="fa-brands fa-steam"></i><span>Steam</span></a>{% endif %}
           </nav>
 
-          <div class="home-sidebar__footer">
-            <p>&copy; {{ "now" | date: "%Y" }} Zhanyu Yang<br>All rights reserved.</p>
-            <img
-              class="home-sidebar__mascot"
-              src="{{ base_path }}/assets/images/mascot/game.png"
-              alt="Mascot"
-              onerror="this.onerror=null;this.style.display='none';"
-            >
+          <div class="zy-sidebar__spacer"></div>
+
+          <div class="zy-sidebar__footer" data-scroll-shift-max="650" data-scroll-shift-speed="0.9">
+            <p>&copy; {{ 'now' | date: '%Y' }} Zhanyu Yang<br>All rights reserved.</p>
+            <img class="zy-game-mascot" src="{{ '/images/mascot/hero-connect-2.png' | relative_url }}" alt="">
           </div>
         </div>
       </aside>
 
-      <div class="home-main">
-        <section class="home-hero card">
-          <div class="home-hero__header">
-            <span class="home-hero__pill">Welcome! 👋</span>
-            <a class="home-hero__cv" href="{{ page.cv_link | default: '/files/arenite/Arenite.pdf' | prepend: base_path }}">CV (PDF)</a>
+      <main class="zy-main" aria-label="Homepage content">
+        <section class="zy-hero zy-card">
+          <div class="zy-hero__topline">
+            <span class="zy-welcome">Welcome! <span aria-hidden="true">👋</span></span>
+            <a class="zy-cv-button" href="{{ cv_href }}"><i class="fa-regular fa-file-lines"></i> CV</a>
           </div>
 
-          <div class="home-hero__content">
-            <div class="home-hero__text">
+          <div class="zy-hero__grid">
+            <div class="zy-hero__copy">
               <h2>Hi, I’m Zhanyu!</h2>
               <p>
-                I’m a PhD student in the Department of Computer Science at Purdue University,
-                advised by <a href="https://www.cs.purdue.edu/homes/bbenes/" target="_blank" rel="noopener">Prof. Bedrich Benes</a>.
+                I’m a Ph.D. candidate in the Department of Computer Science at Purdue University,
+                advised by <a href="https://www.cs.purdue.edu/homes/bbenes/" target="_blank" rel="noopener">Prof. Bedrich Benes</a>. 
+                I received my B.S. in Computational Mathematics from USTC in 2022.
               </p>
               <p>
                 My research interests lie in computer graphics, with a particular focus on physical simulation
                 and procedural modeling.
               </p>
 
-              <div class="home-hero__chips">
-                <span><i class="fa-solid fa-graduation-cap"></i> PhD Student</span>
-                <span><i class="fa-solid fa-building-columns"></i> Purdue University</span>
-                <span><i class="fa-solid fa-location-dot"></i> Indiana, USA</span>
+              <div class="zy-chips" aria-label="Quick profile facts">
+                <span><i class="fa-solid fa-graduation-cap"></i><strong>PhD Candidate</strong><small>Computer Science</small></span>
+                <span><i class="fa-solid fa-building-columns"></i><strong>Purdue University</strong><small>West Lafayette, IN</small></span>
+                <span><i class="fa-solid fa-location-dot"></i><strong>Based in</strong><small>Indiana, USA</small></span>
               </div>
             </div>
 
-            <div class="home-hero__mascot-wrap">
-              <img
-                class="home-hero__mascot"
-                src="{{ base_path }}/assets/images/mascot/hero.png"
-                alt="Hero mascot"
-                onerror="this.onerror=null;this.style.display='none';"
-              >
+            <div class="zy-hero__art" aria-hidden="true">
+              <!-- <div class="zy-soft-circle"></div> -->
+              <img src="{{ '/images/mascot/hero-hello-2.png' | relative_url }}" alt="">
             </div>
           </div>
         </section>
 
-        <section class="home-awards card">
-          <div class="home-awards__list">
+        <section class="zy-awards zy-card" aria-labelledby="awards-title">
+          <div class="zy-awards__title" id="awards-title">
+            <span class="zy-awards__trophy"><i class="fa-solid fa-trophy"></i></span>
+            <span class="zy-awards__title-text">
+              <strong>Awards &</strong>
+              <small>Highlights</small>
+            </span>
+          </div>
+
+          <div class="zy-awards__items">
             {% for item in site.data.home_awards %}
-              <article class="home-awards__item">
-                <div class="home-awards__icon"><i class="fa-solid {{ item.icon | default: 'fa-award' }}"></i></div>
-                <div>
-                  <h3>{{ item.title }}</h3>
-                  <p>{{ item.subtitle }}</p>
-                </div>
+              <article class="zy-award-item">
+                <span class="zy-award-item__icon"><i class="fa-solid {{ item.icon | default: 'fa-award' }}"></i></span>
+                <span>
+                  <strong>{{ item.title }}</strong>
+                  <small>{{ item.subtitle }}</small>
+                </span>
               </article>
             {% endfor %}
           </div>
-          <img
-            class="home-awards__peek"
-            src="{{ base_path }}/assets/images/mascot/award-peek.png"
-            alt="Mascot peeking"
-            onerror="this.onerror=null;this.style.display='none';"
-          >
+
+          <img class="zy-awards__peek" src="{{ '/images/mascot/award-peek-new.png' | relative_url }}" alt="Mascot peeking from the awards card">
         </section>
 
-        <section class="home-section card">
-          <div class="home-section__title-row">
-            <h2>Selected Publications</h2>
-            <a href="{{ base_path }}/arenite/">View Arenite project <span aria-hidden="true">→</span></a>
+        <section class="zy-section" aria-labelledby="pubs-title">
+          <div class="zy-section__heading">
+            <h2 id="pubs-title"><i class="fa-regular fa-newspaper"></i> Publications</h2>
+            <a href="{{ '/arenite/' | relative_url }}">Full Publication List <span aria-hidden="true">→</span></a>
           </div>
 
-          <div class="home-publications">
+          <div class="zy-publications">
             {% for pub in site.data.home_publications %}
-              <article class="home-publication-card">
-                <img
-                  src="{{ pub.image | prepend: base_path }}"
-                  alt="{{ pub.title }}"
-                  onerror="this.onerror=null;this.src='{{ base_path }}/images/500x300.png';"
-                >
-                <div class="home-publication-card__body">
+              {% assign project_url = pub.project_url | to_s | strip %}
+              {% assign paper_url = pub.paper_url | to_s | strip %}
+              {% assign video_url = pub.video_url | to_s | strip %}
+              {% assign bibtex_url = pub.bibtex_url | to_s | strip %}
+              <article class="zy-pub-card zy-card">
+                <a class="zy-pub-card__image" {% if project_url != '' %}href="{{ project_url | relative_url }}"{% elsif paper_url != '' %}href="{{ paper_url }}"{% endif %}>
+                  <img src="{{ pub.image | relative_url }}" alt="{{ pub.title }} thumbnail">
+                </a>
+                <div class="zy-pub-card__body">
+                  {% if pub.tag %}<span class="zy-pub-card__tag">{{ pub.tag }}</span>{% endif %}
                   <h3>{{ pub.title }}</h3>
-                  <p class="authors">{{ pub.authors }}</p>
-                  <p class="venue">{{ pub.venue }}</p>
-                  {% if pub.award %}
-                    <p class="award">🏆 {{ pub.award }}</p>
+                  <p class="zy-pub-card__authors">{{ pub.authors }}</p>
+                  <p class="zy-pub-card__venue">{{ pub.venue }}</p>
+                  {% if pub.award %}<p class="zy-pub-card__award">🏆 {{ pub.award }}</p>{% endif %}
+                </div>
+                <div class="zy-pub-card__links">
+                  {% if project_url != '' %}
+                    <a href="{{ project_url | relative_url }}"><i class="fa-solid fa-link"></i> Project Page</a>
+                  {% else %}
+                    <span class="is-disabled" aria-disabled="true"><i class="fa-solid fa-link"></i> Project Page</span>
                   {% endif %}
 
-                  <p class="links">
-                    {% if pub.project_url %}<a href="{{ pub.project_url | prepend: base_path }}">Project Page</a>{% endif %}
-                    {% if pub.paper_url %}{% if pub.project_url %} | {% endif %}<a href="{{ pub.paper_url }}">Paper</a>{% endif %}
-                    {% if pub.video_url %}{% if pub.paper_url or pub.project_url %} | {% endif %}<a href="{{ pub.video_url }}">Video</a>{% endif %}
-                    {% if pub.bibtex_url %}{% if pub.video_url or pub.paper_url or pub.project_url %} | {% endif %}<a href="{{ pub.bibtex_url | prepend: base_path }}">BibTeX</a>{% endif %}
-                  </p>
+                  {% if paper_url != '' %}
+                    <a href="{{ paper_url }}"><i class="fa-regular fa-file-lines"></i> Paper</a>
+                  {% else %}
+                    <span class="is-disabled" aria-disabled="true"><i class="fa-regular fa-file-lines"></i> Paper</span>
+                  {% endif %}
+
+                  {% if video_url != '' %}
+                    <a href="{{ video_url }}"><i class="fa-regular fa-circle-play"></i> Video</a>
+                  {% else %}
+                    <span class="is-disabled" aria-disabled="true"><i class="fa-regular fa-circle-play"></i> Video</span>
+                  {% endif %}
+
+                  {% if bibtex_url != '' %}
+                    <a href="{{ bibtex_url | relative_url }}"><i class="fa-solid fa-code"></i> BibTeX</a>
+                  {% else %}
+                    <span class="is-disabled" aria-disabled="true"><i class="fa-solid fa-code"></i> BibTeX</span>
+                  {% endif %}
                 </div>
               </article>
             {% endfor %}
           </div>
         </section>
 
-        <section class="home-section card">
-          <div class="home-section__title-row">
-            <h2>News & Updates</h2>
-            <a href="{{ base_path }}/arenite/">Project page <span aria-hidden="true">→</span></a>
+        <section class="zy-section" aria-labelledby="news-title">
+          <div class="zy-section__heading">
+            <h2 id="news-title"><i class="fa-solid fa-bullhorn"></i> News & Updates</h2>
           </div>
-
-          <div class="home-news">
+          <div class="zy-news zy-card">
             {% for item in site.data.home_news %}
-              <article class="home-news__item">
-                <time datetime="{{ item.date }}">{{ item.date | date: "%b %-d, %Y" }}</time>
+              <article class="zy-news__item">
+                <time datetime="{{ item.date }}">{{ item.date | date: '%b %-d, %Y' }}</time>
                 <p>{{ item.text }}</p>
               </article>
             {% endfor %}
           </div>
         </section>
 
-        <section class="home-section card">
-          <h2>Misc / Interests</h2>
-          <div class="home-misc">
-            <div class="home-misc__text">
-              <p>
-                I like sports, especially volleyball and tennis. I was a core member of the USTC volleyball team and
-                participated in multiple Anhui Provincial College Tournaments. In Purdue, I won the champion of
-                Purdue’s Indoor Volleyball League for Grad/Fac/Staff.
-              </p>
-              <p>
-                I also enjoy playing video games. I am a big fan of action games and RPGs such as Monster Hunter and
-                Souls-like games.
-              </p>
-            </div>
-            <div class="home-misc__images">
-              <img
-                src="{{ base_path }}/assets/images/misc/volleyball.jpg"
-                alt="Volleyball"
-                onerror="this.onerror=null;this.src='{{ base_path }}/images/volleyball.png';"
-              >
-              <div>
-                <img
-                  src="{{ base_path }}/assets/images/misc/swine.jpg"
-                  alt="Swine"
-                  onerror="this.onerror=null;this.src='{{ base_path }}/images/daimao.jpg';"
-                >
-                <p>Courtesy of Swine, Baidu Tieba</p>
+        <section class="zy-section" aria-labelledby="misc-title">
+          <div class="zy-section__heading">
+            <h2 id="misc-title"><i class="fa-solid fa-gamepad"></i> Misc / Interests</h2>
+          </div>
+          <div class="zy-card zy-misc">
+            <div class="zy-misc__grid">
+              <div class="zy-misc__text">
+                <p>
+                  I like sports, especially volleyball and tennis. I was a core member of the USTC volleyball team and
+                  participated in multiple Anhui Provincial College Tournaments. In Purdue, I won the champion of
+                  Purdue’s Indoor Volleyball League for GFS.
+                </p>
+                <p>
+                  I also enjoy playing video games. I am a big fan of action games and RPGs such as Monster Hunter and
+                  Souls-like games.
+                </p>
+              </div>
+              <div class="zy-misc__gallery">
+                <figure>
+                  <img src="{{ '/images/volleyball.png' | relative_url }}" alt="Volleyball team">
+                  <figcaption>Volleyball team, USTC</figcaption>
+                </figure>
+                <figure>
+                  <img src="{{ '/images/daimao.jpg' | relative_url }}" alt="Game character image">
+                  <figcaption>Courtesy of Swine, Baidu Tieba</figcaption>
+                </figure>
               </div>
             </div>
           </div>
         </section>
-      </div>
+      </main>
     </div>
+
+    <script>
+      (function () {
+        var root = document.querySelector('.zy-sidebar__inner');
+        var footer = document.querySelector('.zy-sidebar__footer');
+        if (!root || !footer) return;
+
+        var maxShift = parseFloat(footer.getAttribute('data-scroll-shift-max')) || 180;
+        var speed = parseFloat(footer.getAttribute('data-scroll-shift-speed')) || 0.22;
+        var bottomSafeGap = 10;
+        var lowerHalfTargetRatio = 0.62;
+        var ticking = false;
+
+        function updateFooterShift() {
+          var isMobile = window.matchMedia('(max-width: 900px)').matches;
+          var shift = 0;
+
+          if (!isMobile) {
+            var scrollShift = Math.max(0, window.scrollY * speed);
+            var rootRect = root.getBoundingClientRect();
+            var footerTopBase = rootRect.top + footer.offsetTop;
+            var footerBottomBase = footerTopBase + footer.offsetHeight;
+
+            var predictedBottom = footerBottomBase + scrollShift;
+            var bottomGap = window.innerHeight - predictedBottom - bottomSafeGap;
+            var alignShift = Math.max(0, bottomGap);
+
+            var predictedTop = footerTopBase + scrollShift + alignShift;
+            var pageFullyVisible = document.documentElement.scrollHeight <= window.innerHeight + 2;
+            var lowerHalfTargetTop = window.innerHeight * lowerHalfTargetRatio;
+            var lowerHalfShift = pageFullyVisible ? Math.max(0, lowerHalfTargetTop - predictedTop) : 0;
+
+            shift = Math.min(maxShift, scrollShift + alignShift + lowerHalfShift);
+          }
+
+          root.style.setProperty('--zy-footer-shift', shift.toFixed(1) + 'px');
+          ticking = false;
+        }
+
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          window.requestAnimationFrame(updateFooterShift);
+        }
+
+        updateFooterShift();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        window.addEventListener('load', onScroll);
+      })();
+    </script>
 
     {% include scripts.html %}
   </body>
