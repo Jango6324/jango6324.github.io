@@ -1,0 +1,37 @@
+- year: 2026
+  order: 1
+  title: "Woodstock: Interactive Modeling of Fungal Wood Decay"
+  authors: "Zhanyu Yang*, Nikolas Schwarz*, Bosheng Li, Dominik Michels, Bedrich Benes, Sören Pirk, Wojtek Palubicki"
+  venue: "ACM Transactions on Graphics, Vol. 45, No. 4 (SIGGRAPH 2026)."
+  badge: "SIGGRAPH 2026"
+  status: ""
+  image: "/images/woodstock.jpg"
+  project_url: ""
+  paper_url: ""
+  video_url: ""
+  bibtex_url: ""
+
+- year: 2025
+  order: 1
+  title: "Arenite: A Physics-based Sandstone Simulator"
+  authors: "Zhanyu Yang, Aryamaan Jain, Guillaume Cordonnier, Marie-Paule Cani, Zhaopeng Wang, Bedrich Benes"
+  venue: "ACM Transactions on Graphics, Vol. 44, No. 4 (SIGGRAPH 2025)."
+  badge: "SIGGRAPH 2025"
+  image: "/images/arenite.jpg"
+  project_url: "/arenite/"
+  paper_url: "https://doi.org/10.1145/3731201"
+  video_url: "https://www.youtube.com/watch?v=pl_GdrBSAmA"
+  bibtex_url: "/files/Yang25Arenite.bib"
+
+- year: 2024
+  order: 1
+  title: "Unerosion: Simulating Terrain Evolution Back in Time"
+  authors: "Zhanyu Yang, Guillaume Cordonnier, Marie-Paule Cani, Christian Perrenoud, Bedrich Benes"
+  venue: "Computer Graphics Forum, 43:8 (Symposium on Computer Animation 2024)."
+  badge: "SCA 2024"
+  award: "Best Paper, Honorable Mention"
+  image: "/images/unerosion.png"
+  project_url: ""
+  paper_url: "https://doi.org/10.1111/cgf.15182"
+  video_url: "https://www.youtube.com/watch?v=s6JO92jOAlI"
+  bibtex_url: "/files/Yang24Unerosion.bib"
