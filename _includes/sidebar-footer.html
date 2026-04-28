@@ -1,0 +1,8 @@
+{% assign sidebar_footer_mascot = page.sidebar_footer_mascot | default: '/images/mascot/hero-connect-2.png' %}
+{% assign sidebar_footer_shift_max = page.sidebar_footer_shift_max | default: 650 %}
+{% assign sidebar_footer_shift_speed = page.sidebar_footer_shift_speed | default: 0.9 %}
+
+<div class="zy-sidebar__footer" data-scroll-shift-max="{{ sidebar_footer_shift_max }}" data-scroll-shift-speed="{{ sidebar_footer_shift_speed }}">
+  <p>&copy; {{ 'now' | date: '%Y' }} Zhanyu Yang<br>All rights reserved.</p>
+  <img class="zy-game-mascot" src="{{ sidebar_footer_mascot | relative_url }}" alt="">
+</div>

@@ -41,10 +41,7 @@ layout: compress
 
           <div class="zy-sidebar__spacer"></div>
 
-          <div class="zy-sidebar__footer" data-scroll-shift-max="650" data-scroll-shift-speed="0.9">
-            <p>&copy; {{ 'now' | date: '%Y' }} Zhanyu Yang<br>All rights reserved.</p>
-            <img class="zy-game-mascot" src="{{ '/images/mascot/hero-connect-2.png' | relative_url }}" alt="">
-          </div>
+          {% include sidebar-footer.html %}
         </div>
       </aside>
 
@@ -66,68 +63,7 @@ layout: compress
       </main>
     </div>
 
-    <script>
-      (function () {
-        var root = document.querySelector('.zy-sidebar__inner');
-        var footer = document.querySelector('.zy-sidebar__footer');
-        var shell = document.querySelector('.zy-shell');
-        if (!root || !footer || !shell) return;
-
-        var maxShift = parseFloat(footer.getAttribute('data-scroll-shift-max')) || 180;
-        var speed = parseFloat(footer.getAttribute('data-scroll-shift-speed')) || 0.22;
-        var bottomSafeGap = 10;
-        var lowerHalfTargetRatio = 0.62;
-        var ticking = false;
-
-        function updateFooterShift() {
-          var isMobile = window.matchMedia('(max-width: 900px)').matches;
-          var shift = 0;
-
-          if (!isMobile) {
-            var doc = document.documentElement;
-            var scrollableY = Math.max(0, doc.scrollHeight - window.innerHeight);
-            var pageFullyVisible = doc.scrollHeight <= window.innerHeight + 2;
-            var adaptiveMaxShift = Math.min(maxShift, Math.max(80, scrollableY * speed * 0.65 + window.innerHeight * 0.08));
-
-            if (pageFullyVisible) {
-              adaptiveMaxShift = Math.min(adaptiveMaxShift, Math.max(72, window.innerHeight * 0.12));
-            }
-
-            var scrollShift = Math.max(0, window.scrollY * speed);
-            var rootRect = root.getBoundingClientRect();
-            var footerTopBase = rootRect.top + footer.offsetTop;
-            var footerBottomBase = footerTopBase + footer.offsetHeight;
-
-            var predictedBottom = footerBottomBase + scrollShift;
-            var bottomGap = window.innerHeight - predictedBottom - bottomSafeGap;
-            var alignShift = Math.max(0, bottomGap);
-
-            var predictedTop = footerTopBase + scrollShift + alignShift;
-            var lowerHalfTargetTop = window.innerHeight * lowerHalfTargetRatio;
-            var lowerHalfShift = pageFullyVisible ? Math.max(0, lowerHalfTargetTop - predictedTop) : 0;
-            var proposedShift = Math.min(adaptiveMaxShift, scrollShift + alignShift + lowerHalfShift);
-
-            var shellRect = shell.getBoundingClientRect();
-            var shellBoundMaxShift = Math.max(0, shellRect.bottom - bottomSafeGap - footerBottomBase);
-            shift = Math.min(proposedShift, shellBoundMaxShift);
-          }
-
-          root.style.setProperty('--zy-footer-shift', shift.toFixed(1) + 'px');
-          ticking = false;
-        }
-
-        function onScroll() {
-          if (ticking) return;
-          ticking = true;
-          window.requestAnimationFrame(updateFooterShift);
-        }
-
-        updateFooterShift();
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll);
-        window.addEventListener('load', onScroll);
-      })();
-    </script>
+    {% include sidebar-footer-script.html %}
 
     {% include scripts.html %}
   </body>

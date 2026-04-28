@@ -47,10 +47,7 @@ layout: compress
 
           <div class="zy-sidebar__spacer"></div>
 
-          <div class="zy-sidebar__footer" data-scroll-shift-max="650" data-scroll-shift-speed="0.9">
-            <p>&copy; {{ 'now' | date: '%Y' }} Zhanyu Yang<br>All rights reserved.</p>
-            <img class="zy-game-mascot" src="{{ '/images/mascot/hero-connect-2.png' | relative_url }}" alt="">
-          </div>
+          {% include sidebar-footer.html %}
         </div>
       </aside>
 
@@ -212,56 +209,7 @@ layout: compress
       </main>
     </div>
 
-    <script>
-      (function () {
-        var root = document.querySelector('.zy-sidebar__inner');
-        var footer = document.querySelector('.zy-sidebar__footer');
-        if (!root || !footer) return;
-
-        var maxShift = parseFloat(footer.getAttribute('data-scroll-shift-max')) || 180;
-        var speed = parseFloat(footer.getAttribute('data-scroll-shift-speed')) || 0.22;
-        var bottomSafeGap = 10;
-        var lowerHalfTargetRatio = 0.62;
-        var ticking = false;
-
-        function updateFooterShift() {
-          var isMobile = window.matchMedia('(max-width: 900px)').matches;
-          var shift = 0;
-
-          if (!isMobile) {
-            var scrollShift = Math.max(0, window.scrollY * speed);
-            var rootRect = root.getBoundingClientRect();
-            var footerTopBase = rootRect.top + footer.offsetTop;
-            var footerBottomBase = footerTopBase + footer.offsetHeight;
-
-            var predictedBottom = footerBottomBase + scrollShift;
-            var bottomGap = window.innerHeight - predictedBottom - bottomSafeGap;
-            var alignShift = Math.max(0, bottomGap);
-
-            var predictedTop = footerTopBase + scrollShift + alignShift;
-            var pageFullyVisible = document.documentElement.scrollHeight <= window.innerHeight + 2;
-            var lowerHalfTargetTop = window.innerHeight * lowerHalfTargetRatio;
-            var lowerHalfShift = pageFullyVisible ? Math.max(0, lowerHalfTargetTop - predictedTop) : 0;
-
-            shift = Math.min(maxShift, scrollShift + alignShift + lowerHalfShift);
-          }
-
-          root.style.setProperty('--zy-footer-shift', shift.toFixed(1) + 'px');
-          ticking = false;
-        }
-
-        function onScroll() {
-          if (ticking) return;
-          ticking = true;
-          window.requestAnimationFrame(updateFooterShift);
-        }
-
-        updateFooterShift();
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll);
-        window.addEventListener('load', onScroll);
-      })();
-    </script>
+    {% include sidebar-footer-script.html %}
 
     {% include scripts.html %}
   </body>
