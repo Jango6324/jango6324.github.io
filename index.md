@@ -1,5 +1,5 @@
 ---
-layout: home-custom
+layout: 404-custom
 title: "Home"
 permalink: /
 author_profile: false
