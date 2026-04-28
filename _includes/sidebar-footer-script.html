@@ -5,7 +5,6 @@
 
     var desktopQuery = window.matchMedia('(max-width: 900px)');
     var bottomSafeGap = 10;
-    var lowerHalfTargetRatio = 0.62;
 
     function readNumber(node, attr, fallback) {
       var value = parseFloat(node.getAttribute(attr));
@@ -27,35 +26,18 @@
         var shift = 0;
 
         if (!desktopQuery.matches) {
-          var doc = document.documentElement;
           var viewHeight = viewportHeight();
           var maxShift = readNumber(footer, 'data-scroll-shift-max', 650);
           var speed = readNumber(footer, 'data-scroll-shift-speed', 0.9);
-          var scrollableY = Math.max(0, doc.scrollHeight - viewHeight);
-          var pageFullyVisible = doc.scrollHeight <= viewHeight + 2;
-          var adaptiveMaxShift = Math.min(maxShift, Math.max(80, scrollableY * speed * 0.65 + viewHeight * 0.08));
-
-          if (pageFullyVisible) {
-            adaptiveMaxShift = Math.min(adaptiveMaxShift, Math.max(72, viewHeight * 0.12));
-          }
-
-          var scrollShift = Math.max(0, window.scrollY * speed);
+          var scrollShift = Math.min(maxShift, Math.max(0, window.scrollY * speed));
           var rootRect = root.getBoundingClientRect();
           var footerTopBase = rootRect.top + footer.offsetTop;
           var footerBottomBase = footerTopBase + footer.offsetHeight;
 
-          var predictedBottom = footerBottomBase + scrollShift;
-          var bottomGap = viewHeight - predictedBottom - bottomSafeGap;
-          var alignShift = Math.max(0, bottomGap);
-
-          var predictedTop = footerTopBase + scrollShift + alignShift;
-          var lowerHalfTargetTop = viewHeight * lowerHalfTargetRatio;
-          var lowerHalfShift = pageFullyVisible ? Math.max(0, lowerHalfTargetTop - predictedTop) : 0;
-          var proposedShift = Math.min(adaptiveMaxShift, scrollShift + alignShift + lowerHalfShift);
-
+          var viewportBottomShift = Math.max(0, viewHeight - bottomSafeGap - footerBottomBase);
           var shellRect = shell.getBoundingClientRect();
           var shellBoundMaxShift = Math.max(0, shellRect.bottom - bottomSafeGap - footerBottomBase);
-          shift = Math.min(proposedShift, shellBoundMaxShift);
+          shift = Math.min(Math.max(scrollShift, viewportBottomShift), shellBoundMaxShift);
         }
 
         root.style.setProperty('--zy-footer-shift', shift.toFixed(1) + 'px');
