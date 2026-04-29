@@ -1,0 +1,287 @@
+---
+permalink: /woodstock/
+layout: none
+---
+
+{% include base_path %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags remain the same -->
+
+  <title>Woodstock: Interactive Modeling of Fungal Wood Decay</title>
+  <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}/images/woodstock.jpg">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <!-- Same style stack as Arenite -->
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/bulma.min.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/arenite/css/index.css">
+  <style>
+    .woodstock-title {
+      white-space: nowrap;
+      font-size: 38px;
+    }
+
+    .overview-image-wide {
+      width: 120%;
+      max-width: none;
+      display: block;
+      margin-left: -10%;
+    }
+
+    #results-sandstone .item img,
+    #results-carousel .item img {
+      width: 100%;
+      height: 420px;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+    }
+
+    @media screen and (max-width: 1024px) {
+      .woodstock-title {
+        white-space: normal;
+      }
+
+      .overview-image-wide {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      #results-sandstone .item img,
+      #results-carousel .item img {
+        height: 280px;
+      }
+    }
+  </style>
+
+  <!-- Same script stack as Arenite -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="{{ site.baseurl }}/assets/arenite/js/fontawesome.all.min.js"></script>
+  <script src="{{ site.baseurl }}/assets/arenite/js/bulma-carousel.min.js"></script>
+  <script src="{{ site.baseurl }}/assets/arenite/js/bulma-slider.min.js"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script src="{{ site.baseurl }}/assets/arenite/js/index.js"></script>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="xtitle is-1 publication-title woodstock-title">Woodstock: Interactive Modeling of Fungal Wood Decay</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <a href="https://jango6324.github.io/" target="_blank">Zhanyu Yang</a>*<sup>1</sup></span>
+              <span class="author-block">
+                <a href="https://www.vcai-lab.org/team-schwarz" target="_blank">Nikolas Schwarz</a>*<sup>2</sup></span>
+              <span class="author-block">
+                <a href="https://edisonlee0212.github.io/" target="_blank">Bosheng Li</a><sup>1</sup></span>
+              <span class="author-block">
+                <a href="https://dmichels.de/" target="_blank">Dominik Michels</a><sup>3</sup></span>
+              <span class="author-block">
+                <a href="https://www.cs.purdue.edu/homes/bbenes/" target="_blank">Bedrich Benes</a><sup>1</sup></span>
+              <span class="author-block">
+                <a href="https://www.vcai-lab.org/" target="_blank">Soren Pirk</a><sup>2</sup></span>
+              <span class="author-block">
+                <a href="https://wp.faculty.wmi.amu.edu.pl/" target="_blank">Wojtek Palubicki</a><sup>4</sup></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><small><br><sup>1</sup>Purdue University, USA
+                <br><sup>2</sup>Kiel University, Germany
+                <br><sup>3</sup>KAUST, Saudi Arabia
+                <br><sup>4</sup>AMU, Poland
+                <br><sup>*</sup>Equal contribution.</small></span>
+              <br><span class="publication-venue">ACM Transactions on Graphics, Vol. 45, No. 4 (SIGGRAPH 2026)</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="{{ site.baseurl }}/files/woodstock/Woodstock.pdf" target="_blank" class="external-link ">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="{{ site.baseurl }}/images/woodstock.jpg" alt="Woodstock teaser image"/>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light">
+    <div class="container is-max-desktop content">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Fungal wood decay is a complex biophysical phenomenon that involves the degradation of a variety of structural wood components, ranging from lignin and carbohydrates to defensive chemical agents. All these substrates serve as varying resources with different material properties that determine the rate of fungal propagation and the structural integrity and color of decaying wood. We propose a novel approach to simulate the dynamic interactions between the biological and mechanical components of wood decay, including fungal colonization, chemical defense, and moisture-driven fracture. We propose a novel volumetric representation of trees that includes grain-aligned mesh generation, internal moisture dynamics, and tissue-specific health states. Furthermore, we model the anisotropic diffusion, consumption, and resulting material failure caused by white and brown rot fungi. This allows simulating and rendering 3D volumetric decaying trees that realistically capture key aspects of the process, such as the progression of cuboid fracture patterns, the hollowing of trunks, and the effects of environmental moisture on structural stability. 
+            </p>
+          </div>
+        </div>
+      </div>
+      <h2 class="title is-3 has-text-centered">Overview</h2>
+      <img src="{{ site.baseurl }}/files/woodstock/images/overview-v1.png" alt="MY ALT TEXT" class="overview-image-wide"/>
+    </div>
+  </section>
+
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3">Main Results</h2>
+        <div id="results-sandstone" class="carousel results-carousel">
+          <div class="item">
+            <img src="{{ site.baseurl }}/files/woodstock/images/collision.png" alt="Woodstock result 1"/>
+            <h2 class="subtitle has-text-centered"> A log progressively degraded by brown rot.</h2>
+          </div>
+          <div class="item">
+            <img src="{{ site.baseurl }}/files/woodstock/images/bspablation.png" alt="Woodstock result 2"/>
+            <h2 class="subtitle has-text-centered"> Comparison of the fracture patterns under different BSP configurations.</h2>
+          </div>
+          <div class="item">
+            <img src="{{ site.baseurl }}/files/woodstock/images/trunk.png" alt="Woodstock result 3"/>
+            <h2 class="subtitle has-text-centered"> Evolution of wood decay of a cut tree trunk.</h2>
+          </div>
+          <div class="item">
+            <img src="{{ site.baseurl }}/files/woodstock/images/board.png" alt="Woodstock result 4"/>
+            <h2 class="subtitle has-text-centered"> Biophysical feedback at the example of a wooden plank.</h2>
+          </div>
+          <div class="item">
+            <img src="{{ site.baseurl }}/files/woodstock/images/cracking.jpg" alt="Woodstock result 5"/>
+            <h2 class="subtitle has-text-centered"> Different cracking patterns from wood material anisotropy.</h2>
+          </div>
+          <div class="item">
+            <img src="{{ site.baseurl }}/files/woodstock/images/oak.png" alt="Woodstock result 6"/>
+            <h2 class="subtitle has-text-centered"> Temporal development of an oak tree species after death.</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="hero is-small is-light">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3">Supplementary Video</h2>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <div class="publication-video">
+              <iframe src="about:blank" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            <p>[TODO]</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <h2 class="title" style="margin-bottom: 0;">BibTeX</h2>
+        <button id="copy-bibtex-btn" class="button is-small is-link is-light" type="button">Copy</button>
+      </div>
+      <pre><code id="bibtex-content">Coming soon!</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/vinthony/project-page-template">modification version</a> of <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> from <a href="https://github.com/vinthony">vinthony</a>.
+              <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var copyButton = document.getElementById('copy-bibtex-btn');
+      var bibtexContent = document.getElementById('bibtex-content');
+
+      if (!copyButton || !bibtexContent) {
+        return;
+      }
+
+      var defaultText = copyButton.textContent;
+
+      function setButtonTextTemporarily(text) {
+        copyButton.textContent = text;
+        window.setTimeout(function () {
+          copyButton.textContent = defaultText;
+        }, 1500);
+      }
+
+      copyButton.addEventListener('click', function () {
+        var textToCopy = bibtexContent.textContent;
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(textToCopy)
+            .then(function () {
+              setButtonTextTemporarily('Copied');
+            })
+            .catch(function () {
+              setButtonTextTemporarily('Failed');
+            });
+          return;
+        }
+
+        var textArea = document.createElement('textarea');
+        textArea.value = textToCopy;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          var copied = document.execCommand('copy');
+          setButtonTextTemporarily(copied ? 'Copied' : 'Failed');
+        } catch (err) {
+          setButtonTextTemporarily('Failed');
+        }
+
+        document.body.removeChild(textArea);
+      });
+    })();
+  </script>
+</body>
+</html>

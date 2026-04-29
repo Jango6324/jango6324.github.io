@@ -12,7 +12,7 @@ layout: none
   <!-- Meta tags remain the same -->
 
   <title>Arenite: A Physics-based Sandstone Simulator</title>
-  <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}/files/arenite/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}/images/arenite.jpg">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
   <!-- Your CSS references -->
@@ -260,8 +260,29 @@ End paper poster -->
 <!--BibTex citation -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>Coming soon!</code></pre>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <h2 class="title" style="margin-bottom: 0;">BibTeX</h2>
+        <button id="copy-bibtex-btn" class="button is-small is-link is-light" type="button">Copy</button>
+      </div>
+      <pre><code id="bibtex-content">@article{10.1145/3731201,
+author = {Yang, Zhanyu and Jain, Aryamaan and Cordonnier, Guillaume and Cani, Marie-Paule and Wang, Zhaopeng and Benes, Bedrich},
+title = {Arenite: A Physics-based Sandstone Simulator},
+year = {2025},
+issue_date = {August 2025},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {44},
+number = {4},
+issn = {0730-0301},
+url = {https://doi.org/10.1145/3731201},
+doi = {10.1145/3731201},
+abstract = {We introduce Arenite, a novel physics-based approach for modeling sandstone structures. The key insight of our work is that simulating a combination of stress and multi-factor erosion enables the generation of a wide variety of sandstone structures observed in nature. We isolate the key shape-forming phenomena: multi-physics fabric interlocking, wind and fluvial erosion, and particle-based deposition processes. Complex 3D structures such as arches, alcoves, hoodoos, or buttes can be achieved by creating simple 3D structures with user-painted erodable areas and vegetation and running the simulation. We demonstrate the algorithm on a wide variety of structures, and our GPU-based implementation achieves the simulation in less than 5 minutes on a desktop computer for our most complex example.},
+journal = {ACM Trans. Graph.},
+month = jul,
+articleno = {151},
+numpages = {13},
+keywords = {physical simulation of natural phenomena}
+}</code></pre>
     </div>
 </section>
 <!--End BibTex citation -->
@@ -290,6 +311,58 @@ End paper poster -->
 <!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
 
     <!-- End of Statcounter Code -->
+
+  <script>
+    (function () {
+      var copyButton = document.getElementById('copy-bibtex-btn');
+      var bibtexContent = document.getElementById('bibtex-content');
+
+      if (!copyButton || !bibtexContent) {
+        return;
+      }
+
+      var defaultText = copyButton.textContent;
+
+      function setButtonTextTemporarily(text) {
+        copyButton.textContent = text;
+        window.setTimeout(function () {
+          copyButton.textContent = defaultText;
+        }, 1500);
+      }
+
+      copyButton.addEventListener('click', function () {
+        var textToCopy = bibtexContent.textContent;
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(textToCopy)
+            .then(function () {
+              setButtonTextTemporarily('Copied');
+            })
+            .catch(function () {
+              setButtonTextTemporarily('Failed');
+            });
+          return;
+        }
+
+        var textArea = document.createElement('textarea');
+        textArea.value = textToCopy;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          var copied = document.execCommand('copy');
+          setButtonTextTemporarily(copied ? 'Copied' : 'Failed');
+        } catch (err) {
+          setButtonTextTemporarily('Failed');
+        }
+
+        document.body.removeChild(textArea);
+      });
+    })();
+  </script>
 
   </body>
   </html>
