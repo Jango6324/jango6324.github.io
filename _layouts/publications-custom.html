@@ -102,7 +102,8 @@ layout: compress
                         </div>
 
                         <h3>{{ pub.title }}</h3>
-                        <p class="publication-row__authors">{{ pub.authors }}</p>
+                        {% assign highlighted_authors = pub.authors | replace_first: "Zhanyu Yang", "<strong>Zhanyu Yang</strong>" %}
+                        <p class="publication-row__authors">{{ highlighted_authors }}</p>
                         <p class="publication-row__venue"><em>{{ pub.venue }}</em></p>
 
                         <div class="publication-row__links" aria-label="Publication links">

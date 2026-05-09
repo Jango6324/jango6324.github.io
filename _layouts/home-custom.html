@@ -128,7 +128,8 @@ layout: compress
                 <div class="zy-pub-card__body">
                   {% if pub.tag %}<span class="zy-pub-card__tag">{{ pub.tag }}</span>{% endif %}
                   <h3>{{ pub.title }}</h3>
-                  <p class="zy-pub-card__authors">{{ pub.authors }}</p>
+                  {% assign highlighted_authors = pub.authors | replace_first: "Zhanyu Yang", "<strong>Zhanyu Yang</strong>" %}
+                  <p class="zy-pub-card__authors">{{ highlighted_authors }}</p>
                   <p class="zy-pub-card__venue">{{ pub.venue }}</p>
                   {% if pub.award %}<p class="zy-pub-card__award">🏆 {{ pub.award }}</p>{% endif %}
                 </div>
