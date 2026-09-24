@@ -8,7 +8,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 14.266666666666667,
         "file": "videos/01-banana-two-cuts-particles-30fps.mp4",
-        "poster": "posters/01-banana-two-cuts-particles.jpg"
+        "poster": "posters/01-banana-two-cuts-particles-start.jpg"
       },
       {
         "id": "mesh",
@@ -16,7 +16,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 14.266666666666667,
         "file": "videos/01-banana-two-cuts-mesh-30fps.mp4",
-        "poster": "posters/01-banana-two-cuts-mesh.jpg"
+        "poster": "posters/01-banana-two-cuts-mesh-start.jpg"
       },
       {
         "id": "physical",
@@ -24,7 +24,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 14.266666666666667,
         "file": "videos/01-banana-two-cuts-physical-30fps.mp4",
-        "poster": "posters/01-banana-two-cuts-physical.jpg"
+        "poster": "posters/01-banana-two-cuts-physical-start.jpg"
       }
     ]
   },
@@ -37,7 +37,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 27.966666666666665,
         "file": "videos/02-banana-four-cuts-particles-30fps.mp4",
-        "poster": "posters/02-banana-four-cuts-particles.jpg"
+        "poster": "posters/02-banana-four-cuts-particles-start.jpg"
       },
       {
         "id": "mesh",
@@ -45,7 +45,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 27.966666666666665,
         "file": "videos/02-banana-four-cuts-mesh-30fps.mp4",
-        "poster": "posters/02-banana-four-cuts-mesh.jpg"
+        "poster": "posters/02-banana-four-cuts-mesh-start.jpg"
       },
       {
         "id": "physical",
@@ -53,7 +53,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 27.966666666666665,
         "file": "videos/02-banana-four-cuts-physical-30fps.mp4",
-        "poster": "posters/02-banana-four-cuts-physical.jpg"
+        "poster": "posters/02-banana-four-cuts-physical-start.jpg"
       }
     ]
   },
@@ -66,7 +66,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 14.833333333333334,
         "file": "videos/03-sequential-slicing-particles-30fps.mp4",
-        "poster": "posters/03-sequential-slicing-particles.jpg"
+        "poster": "posters/03-sequential-slicing-particles-start.jpg"
       },
       {
         "id": "mesh",
@@ -74,7 +74,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 14.833333333333334,
         "file": "videos/03-sequential-slicing-mesh-30fps.mp4",
-        "poster": "posters/03-sequential-slicing-mesh.jpg"
+        "poster": "posters/03-sequential-slicing-mesh-start.jpg"
       }
     ]
   },
@@ -87,7 +87,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 11.533333333333333,
         "file": "videos/04-tip-scoring-particles-30fps.mp4",
-        "poster": "posters/04-tip-scoring-particles.jpg"
+        "poster": "posters/04-tip-scoring-particles-start.jpg"
       },
       {
         "id": "mesh",
@@ -95,7 +95,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 11.533333333333333,
         "file": "videos/04-tip-scoring-mesh-30fps.mp4",
-        "poster": "posters/04-tip-scoring-mesh.jpg"
+        "poster": "posters/04-tip-scoring-mesh-start.jpg"
       }
     ]
   },
@@ -108,7 +108,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 11.966666666666667,
         "file": "videos/05-deep-cuts-particles-30fps.mp4",
-        "poster": "posters/05-deep-cuts-particles.jpg"
+        "poster": "posters/05-deep-cuts-particles-start.jpg"
       },
       {
         "id": "mesh",
@@ -116,7 +116,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 11.966666666666667,
         "file": "videos/05-deep-cuts-mesh-30fps.mp4",
-        "poster": "posters/05-deep-cuts-mesh.jpg"
+        "poster": "posters/05-deep-cuts-mesh-start.jpg"
       }
     ]
   },
@@ -129,7 +129,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 17.866666666666667,
         "file": "videos/06-cake-blademaster-particles-30fps.mp4",
-        "poster": "posters/06-cake-blademaster-particles.jpg"
+        "poster": "posters/06-cake-blademaster-particles-start.jpg"
       },
       {
         "id": "mesh",
@@ -137,7 +137,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 17.866666666666667,
         "file": "videos/06-cake-blademaster-mesh-30fps.mp4",
-        "poster": "posters/06-cake-blademaster-mesh.jpg"
+        "poster": "posters/06-cake-blademaster-mesh-start.jpg"
       }
     ]
   },
@@ -150,7 +150,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 18.266666666666666,
         "file": "videos/07-cake-single-field-mpm-particles-30fps.mp4",
-        "poster": "posters/07-cake-single-field-mpm-particles.jpg"
+        "poster": "posters/07-cake-single-field-mpm-particles-start.jpg"
       },
       {
         "id": "mesh",
@@ -158,7 +158,7 @@ window.CLIP_DATA = [
         "height": 960,
         "duration_seconds": 18.266666666666666,
         "file": "videos/07-cake-single-field-mpm-mesh-30fps.mp4",
-        "poster": "posters/07-cake-single-field-mpm-mesh.jpg"
+        "poster": "posters/07-cake-single-field-mpm-mesh-start.jpg"
       }
     ]
   },
@@ -171,7 +171,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 6.033333333333333,
         "file": "videos/08-gravity-driven-cutting-higher-sharpness-30fps.mp4",
-        "poster": "posters/08-gravity-driven-cutting-higher-sharpness.jpg"
+        "poster": "posters/08-gravity-driven-cutting-higher-sharpness-start.jpg"
       },
       {
         "id": "lower-sharpness",
@@ -179,7 +179,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 6.033333333333333,
         "file": "videos/08-gravity-driven-cutting-lower-sharpness-30fps.mp4",
-        "poster": "posters/08-gravity-driven-cutting-lower-sharpness.jpg"
+        "poster": "posters/08-gravity-driven-cutting-lower-sharpness-start.jpg"
       }
     ]
   },
@@ -192,7 +192,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 5.0,
         "file": "videos/09-two-way-coupling-normal-speed-30fps.mp4",
-        "poster": "posters/09-two-way-coupling-normal-speed.jpg"
+        "poster": "posters/09-two-way-coupling-normal-speed-start.jpg"
       },
       {
         "id": "slow-motion",
@@ -200,7 +200,7 @@ window.CLIP_DATA = [
         "height": 720,
         "duration_seconds": 5.933333333333334,
         "file": "videos/09-two-way-coupling-slow-motion-30fps.mp4",
-        "poster": "posters/09-two-way-coupling-slow-motion.jpg"
+        "poster": "posters/09-two-way-coupling-slow-motion-start.jpg"
       }
     ]
   },
@@ -213,7 +213,7 @@ window.CLIP_DATA = [
         "height": 800,
         "duration_seconds": 21.233333333333334,
         "file": "videos/10-cressim-mpm-comparison-blademaster-30fps.mp4",
-        "poster": "posters/10-cressim-mpm-comparison-blademaster.jpg"
+        "poster": "posters/10-cressim-mpm-comparison-blademaster-start.jpg"
       },
       {
         "id": "cressim-mpm",
@@ -221,7 +221,7 @@ window.CLIP_DATA = [
         "height": 800,
         "duration_seconds": 21.233333333333334,
         "file": "videos/10-cressim-mpm-comparison-cressim-mpm-30fps.mp4",
-        "poster": "posters/10-cressim-mpm-comparison-cressim-mpm.jpg"
+        "poster": "posters/10-cressim-mpm-comparison-cressim-mpm-start.jpg"
       }
     ]
   }
