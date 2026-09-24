@@ -1,4 +1,17 @@
 - year: 2026
+  order: 0
+  title: "BladeMaster: Real-Time Robotic Cutting Simulation with Online-Generated Persistent Discontinuities"
+  authors: "Zhanyu Yang, Yunuo Chen, Yanjia Huang, Joseph Masterjohn, Yin Yang, Chenfanfu Jiang"
+  venue: "arXiv:2609.27342, 2026."
+  image: "/images/blademaster.png"
+  tag: "arXiv"
+  paper_label: "Preprint"
+  project_url: "/blademaster/"
+  paper_url: "https://arxiv.org/abs/2609.27342"
+  video_url: ""
+  bibtex_url: "/files/Yang26BladeMaster.bib"
+
+- year: 2026
   order: 1
   title: "Woodstock: Interactive Modeling of Fungal Wood Decay"
   authors: "Zhanyu Yang, Nikolas Schwarz, Bosheng Li, Dominik Michels, Bedrich Benes, Sören Pirk, Wojtek Palubicki"
@@ -31,6 +44,7 @@
   badge: "SCA 2024"
   award: "Best Paper, Honorable Mention"
   image: "/images/unerosion.png"
+  image_position: "50% 100%"
   project_url: ""
   paper_url: "https://doi.org/10.1111/cgf.15182"
   video_url: "https://www.youtube.com/watch?v=s6JO92jOAlI"

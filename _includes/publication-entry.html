@@ -1,0 +1,45 @@
+{% assign pub = include.pub %}
+{% assign project_url = pub.project_url | to_s | strip %}
+{% assign paper_url = pub.paper_url | to_s | strip %}
+{% assign video_url = pub.video_url | to_s | strip %}
+{% assign bibtex_url = pub.bibtex_url | to_s | strip %}
+<article class="zy-pub-card zy-card">
+  <a class="zy-pub-card__image" {% if project_url != '' %}href="{% if project_url contains '://' %}{{ project_url }}{% else %}{{ project_url | relative_url }}{% endif %}"{% elsif paper_url != '' %}href="{% if paper_url contains '://' %}{{ paper_url }}{% else %}{{ paper_url | relative_url }}{% endif %}"{% endif %}>
+    <img src="{{ pub.image | relative_url }}" alt="{{ pub.title }} thumbnail" loading="lazy" decoding="async"{% if pub.image_position %} style="--teaser-position: {{ pub.image_position | escape }};"{% endif %}>
+  </a>
+  <div class="zy-pub-card__body">
+    {% assign publication_tag = pub.tag | default: pub.badge %}
+    {% if publication_tag %}<span class="zy-pub-card__tag">{{ publication_tag }}</span>{% endif %}
+    {% if pub.status and pub.status != "" %}<span class="zy-pub-card__tag">{{ pub.status }}</span>{% endif %}
+    <h3>{{ pub.title }}</h3>
+    {% assign highlighted_authors = pub.authors | replace_first: "Zhanyu Yang", "<strong>Zhanyu Yang</strong>" %}
+    <p class="zy-pub-card__authors">{{ highlighted_authors }}</p>
+    <p class="zy-pub-card__venue">{{ pub.venue }}</p>
+    {% if pub.award %}<p class="zy-pub-card__award">🏆 {{ pub.award }}</p>{% endif %}
+  </div>
+  <div class="zy-pub-card__links">
+    {% if project_url != '' %}
+      <a href="{% if project_url contains '://' %}{{ project_url }}{% else %}{{ project_url | relative_url }}{% endif %}"><i class="fa-solid fa-link"></i> Project Page</a>
+    {% else %}
+      <span class="is-disabled" aria-disabled="true"><i class="fa-solid fa-link"></i> Project Page</span>
+    {% endif %}
+
+    {% if paper_url != '' %}
+      <a href="{% if paper_url contains '://' %}{{ paper_url }}{% else %}{{ paper_url | relative_url }}{% endif %}"><i class="fa-regular fa-file-lines"></i> {{ pub.paper_label | default: 'Paper' | escape }}</a>
+    {% else %}
+      <span class="is-disabled" aria-disabled="true"><i class="fa-regular fa-file-lines"></i> {{ pub.paper_label | default: 'Paper' | escape }}</span>
+    {% endif %}
+
+    {% if video_url != '' %}
+      <a href="{% if video_url contains '://' %}{{ video_url }}{% else %}{{ video_url | relative_url }}{% endif %}"><i class="fa-regular fa-circle-play"></i> Video</a>
+    {% else %}
+      <span class="is-disabled" aria-disabled="true"><i class="fa-regular fa-circle-play"></i> Video</span>
+    {% endif %}
+
+    {% if bibtex_url != '' %}
+      <a href="{% if bibtex_url contains '://' %}{{ bibtex_url }}{% else %}{{ bibtex_url | relative_url }}{% endif %}"><i class="fa-solid fa-code"></i> BibTeX</a>
+    {% else %}
+      <span class="is-disabled" aria-disabled="true"><i class="fa-solid fa-code"></i> BibTeX</span>
+    {% endif %}
+  </div>
+</article>

@@ -9,7 +9,6 @@ layout: compress
   {% assign publications = site.data.home_publications %}
 {% endif %}
 {% assign grouped_publications = publications | group_by: "year" | sort: "name" | reverse %}
-{% assign fallback_publication_image = '/images/500x300.png' | relative_url %}
 
 <!doctype html>
 <html lang="{{ site.locale | default: 'en-US' | slice: 0,2 }}" class="no-js"{% if site.site_theme == "dark" %} data-theme="dark"{% endif %}>
@@ -76,63 +75,10 @@ layout: compress
               <div class="publications-year">
                 <h2><i class="fa-regular fa-calendar-days"></i>{{ group.name }}</h2>
 
-                <div class="publications-year__items">
+                <div class="zy-publications">
                   {% assign papers = group.items | sort: "order" %}
                   {% for pub in papers %}
-                    {% assign project_url = pub.project_url | to_s | strip %}
-                    {% assign paper_url = pub.paper_url | to_s | strip %}
-                    {% assign video_url = pub.video_url | to_s | strip %}
-                    {% assign bibtex_url = pub.bibtex_url | to_s | strip %}
-                    {% assign status_text = pub.status | to_s | strip %}
-                    <article class="publication-row publications-card">
-                      <a class="publication-row__image-link" href="{% if project_url != '' %}{% if project_url contains '://' %}{{ project_url }}{% else %}{{ project_url | relative_url }}{% endif %}{% elsif paper_url != '' %}{% if paper_url contains '://' %}{{ paper_url }}{% else %}{{ paper_url | relative_url }}{% endif %}{% else %}#{% endif %}" aria-label="{{ pub.title }}">
-                        <img
-                          class="publication-row__image"
-                          src="{{ pub.image | relative_url }}"
-                          alt="{{ pub.title }}"
-                          onerror="this.onerror=null;this.src='{{ fallback_publication_image }}';"
-                        >
-                      </a>
-
-                      <div class="publication-row__content">
-                        <div class="publication-row__badges">
-                          {% if pub.badge %}<span class="publication-badge publication-badge--red">{{ pub.badge }}</span>{% endif %}
-                          {% if status_text != '' %}<span class="publication-badge publication-badge--green"><i class="fa-solid fa-circle"></i>{{ status_text }}</span>{% endif %}
-                          {% if pub.award %}<span class="publication-badge publication-badge--gold"><i class="fa-solid fa-trophy"></i>{{ pub.award }}</span>{% endif %}
-                        </div>
-
-                        <h3>{{ pub.title }}</h3>
-                        {% assign highlighted_authors = pub.authors | replace_first: "Zhanyu Yang", "<strong>Zhanyu Yang</strong>" %}
-                        <p class="publication-row__authors">{{ highlighted_authors }}</p>
-                        <p class="publication-row__venue"><em>{{ pub.venue }}</em></p>
-
-                        <div class="publication-row__links" aria-label="Publication links">
-                          {% if project_url != '' %}
-                            <a href="{% if project_url contains '://' %}{{ project_url }}{% else %}{{ project_url | relative_url }}{% endif %}"><i class="fa-solid fa-link"></i>Project Page</a>
-                          {% else %}
-                            <span class="is-disabled" aria-disabled="true"><i class="fa-solid fa-link"></i>Project Page</span>
-                          {% endif %}
-
-                          {% if paper_url != '' %}
-                            <a href="{% if paper_url contains '://' %}{{ paper_url }}{% else %}{{ paper_url | relative_url }}{% endif %}"><i class="fa-regular fa-file-lines"></i>Paper</a>
-                          {% else %}
-                            <span class="is-disabled" aria-disabled="true"><i class="fa-regular fa-file-lines"></i>Paper</span>
-                          {% endif %}
-
-                          {% if video_url != '' %}
-                            <a href="{% if video_url contains '://' %}{{ video_url }}{% else %}{{ video_url | relative_url }}{% endif %}"><i class="fa-regular fa-circle-play"></i>Video</a>
-                          {% else %}
-                            <span class="is-disabled" aria-disabled="true"><i class="fa-regular fa-circle-play"></i>Video</span>
-                          {% endif %}
-
-                          {% if bibtex_url != '' %}
-                            <a href="{% if bibtex_url contains '://' %}{{ bibtex_url }}{% else %}{{ bibtex_url | relative_url }}{% endif %}"><i class="fa-solid fa-code"></i>BibTeX</a>
-                          {% else %}
-                            <span class="is-disabled" aria-disabled="true"><i class="fa-solid fa-code"></i>BibTeX</span>
-                          {% endif %}
-                        </div>
-                      </div>
-                    </article>
+                    {% include publication-entry.html pub=pub %}
                   {% endfor %}
                 </div>
               </div>

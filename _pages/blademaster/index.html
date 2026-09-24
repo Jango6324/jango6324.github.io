@@ -1,0 +1,116 @@
+---
+permalink: /blademaster/
+layout: none
+title: "BladeMaster: Real-Time Robotic Cutting Simulation with Online-Generated Persistent Discontinuities"
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BladeMaster: Real-Time Robotic Cutting Simulation with Online-Generated Persistent Discontinuities.">
+  <title>BladeMaster: Real-Time Robotic Cutting Simulation with Online-Generated Persistent Discontinuities</title>
+  <link rel="canonical" href="{{ '/blademaster/' | absolute_url }}">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="{{ '/assets/blademaster/fonts/source-sans-3-upright.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ '/assets/blademaster/fonts/instrument-sans-variable.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ '/assets/blademaster/css/style.css' | relative_url }}">
+  <script src="{{ '/assets/blademaster/js/data.js' | relative_url }}" defer></script>
+  <script src="{{ '/assets/blademaster/js/page.js' | relative_url }}" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#results">Skip to results</a>
+  <main>
+    <header class="paper-header" id="top">
+      <div class="wrap">
+      <h1><img class="paper-wordmark" src="{{ '/assets/blademaster/images/blademaster-wordmark.svg' | relative_url }}" alt="BladeMaster" width="719" height="148" fetchpriority="high"><span>Real-Time Robotic Cutting Simulation with<br class="title-break"> <span class="title-term">Online-Generated</span> <span class="title-term">Persistent Discontinuities</span></span></h1>
+      <p class="authors"><span><a href="https://jango6324.github.io/" target="_blank" rel="noopener">Zhanyu Yang</a><sup>1</sup></span><span><a href="https://yunuoch.github.io/" target="_blank" rel="noopener">Yunuo Chen</a><sup>2</sup></span><span><a href="https://huangyanjia.github.io/" target="_blank" rel="noopener">Yanjia Huang</a><sup>3</sup></span><span><a href="https://www.linkedin.com/in/joemasterjohn/" target="_blank" rel="noopener">Joseph Masterjohn</a><sup>4</sup></span><span><a href="https://yangzzzy.github.io/" target="_blank" rel="noopener">Yin Yang</a><sup>5</sup></span><span><a href="https://www.math.ucla.edu/~cffjiang/" target="_blank" rel="noopener">Chenfanfu Jiang</a><sup>2</sup></span></p>
+      <p class="affiliations"><span><sup>1</sup> Purdue University</span><span><sup>2</sup> UCLA</span><span><sup>3</sup> Envora Inc.</span><span><sup>4</sup> Toyota Research Institute</span><span><sup>5</sup> University of Utah</span></p>
+      <div class="resource-links"><a class="pdf-link" href="https://arxiv.org/abs/2609.27342" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 18 20"><path d="M3 1h8l4 4v14H3z M11 1v5h4 M6 10h6 M6 14h6"/></svg>Preprint</a><a href="#bibtex-section">BibTeX</a></div>
+      </div>
+    </header>
+
+    <section class="paper-abstract wrap" id="abstract" aria-labelledby="abstract-title">
+      <h2 id="abstract-title">Abstract</h2>
+      <p class="abstract-text">Cutting changes both the shape and topology of deformable objects, making accurate simulation challenging for robotic manipulation. A simulator must track the cutting tool as a cut develops, preserve the resulting discontinuities after tool withdrawal, and enable newly exposed surfaces to interact with the tool and with each other. Existing formulations often prescribe cut surfaces in advance or couple material separation to auxiliary geometric fields. We introduce BladeMaster, a GPU-accelerated cutting framework based on the total Lagrangian material point method (TLMPM). Our key idea is to encode the cutting history directly on material points through persistent side labels generated online from the blade geometry. These labels govern particle–grid coupling, preserving connectivity within intact material while preventing spurious coupling across cut faces after tool withdrawal. Our formulation supports progressive and intersecting cuts without predefined cut surfaces or particle duplication. Material–material contact enables cut surfaces to recontact and slide against each other without reconnecting, while two-way tool–material coupling allows material reaction forces to influence tool motion. Experiments demonstrate tool-driven cutting followed by manipulation, with faster-than-real-time performance on representative tasks.</p>
+    </section>
+
+
+    <section class="lead-result wrap" id="results" aria-labelledby="real-title">
+      <div class="result-heading"><h2 id="real-title">Robotic Cutting and Manipulation</h2><div class="tab-list" role="tablist" aria-label="Banana experiment"><button class="active" role="tab" aria-selected="true" data-banana="01-banana-two-cuts">Two cuts</button><button role="tab" aria-selected="false" tabindex="-1" data-banana="02-banana-four-cuts">Four cuts</button></div></div>
+      <div class="player" id="banana-player" aria-label="Simulated particles, reconstructed surface, and real robot"></div>
+      <p class="caption">The robot cuts a banana and pushes the pieces aside. Simulation and the real robot follow the same knife trajectory.</p>
+</section>
+
+    <section class="results-section wrap" id="capabilities" aria-labelledby="capabilities-title">
+      <h2 id="capabilities-title">Simulation Results</h2>
+      <div class="result-block first" id="slicing">
+        <div class="result-heading"><h3>Sequential Slicing</h3></div>
+        <div class="player" id="slicing-player" aria-label="Sequential slicing shown as simulated particles and a reconstructed surface"></div>
+        <p class="caption">The knife cuts thin slices that topple under gravity and accumulate on the cutting board. Material below the blade remains connected until the cut is complete.</p>
+      </div>
+
+      <div class="result-block" id="scoring">
+        <div class="result-heading"><h3>Knife-tip Scoring at Two Depths</h3><div class="view-toggle" aria-label="Scoring representation"><button class="active" data-scoring-view="mesh" aria-pressed="true">Surface</button><button data-scoring-view="particles" aria-pressed="false">Particles</button></div></div>
+        <div class="player" id="scoring-player" aria-label="Shallow and deeper intersecting cuts"></div>
+        <p class="caption">The same cross-shaped knife-tip path is repeated at two penetration depths. Both create intersecting partial cuts, leaving the material connected underneath.</p>
+      </div>
+
+      <div class="result-block" id="gravity">
+        <h3>Gravity-driven Cutting</h3>
+        <div class="player" id="gravity-player" aria-label="Higher and lower blade sharpness"></div>
+        <p class="caption">The knife falls under gravity as material reaction forces rotate it and deflect its path. The cut surface is generated online along this evolving trajectory. With lower blade sharpness, the knife does not cut through the block.</p>
+      </div>
+
+      <div class="result-block" id="coupling">
+        <h3>Two-way Tool–Material Coupling</h3>
+        <div class="player" id="coupling-player" aria-label="Normal speed and slow motion of freely moving knives"></div>
+        <p class="caption">Material reactions decelerate the freely moving knives. Higher initial speeds produce deeper penetration.</p>
+      </div>
+    </section>
+
+    <section class="results-section wrap" id="comparisons" aria-labelledby="comparison-title">
+      <h2 id="comparison-title">Comparisons</h2>
+      <div class="result-block first" id="experiments">
+        <div class="result-heading"><h3>Slice Lifting</h3><div class="view-toggle" aria-label="Slice lifting representation"><button class="active" data-cake-view="mesh" aria-pressed="true">Surface</button><button data-cake-view="particles" aria-pressed="false">Particles</button></div></div>
+        <div class="player" id="cake-player" aria-label="BladeMaster and single-field MPM"></div>
+        <p class="caption">BladeMaster's persistent discontinuities keep the cut slice separated after knife withdrawal, allowing it to be lifted independently. With identical particle sampling and knife motion, the single-field baseline pulls the surrounding material upward.</p>
+      </div>
+      <div class="result-block" id="comparison">
+        <h3>Comparison with <a class="method-reference" href="https://arxiv.org/abs/2502.18437" target="_blank" rel="noopener" title="CRESSim-MPM: A Material Point Method Library for Surgical Soft Body Simulation with Cutting and Suturing — Yafei Ou and Mahdi Tavakoli, IROS 2025">CRESSim-MPM</a><span class="reference-attribution">(Ou and Tavakoli, 2025)</span></h3>
+        <div class="player" id="cressim-player" aria-label="BladeMaster and CRESSim-MPM"></div>
+        <div class="comparison-summary">
+          <div class="comparison-observation">
+            <h4>Independent manipulation</h4>
+            <p class="caption">After two cuts, only the left piece receives an initial leftward velocity. With BladeMaster, it moves away while the middle and right pieces remain near their original positions. In CRESSim-MPM, the middle and right pieces are also pulled leftward. This demonstrates that BladeMaster supports independent manipulation after successive cuts.</p>
+          </div>
+          <table class="comparison-table" aria-label="Quantitative comparison with CRESSim-MPM">
+            <caption>Quantitative results</caption>
+            <thead><tr><th scope="col">Measurement</th><th scope="col">BladeMaster</th><th scope="col">CRESSim-MPM</th></tr></thead>
+            <tbody>
+              <tr data-measurement="gap"><th scope="row"><span class="measurement-name">Mean cut gap</span><span class="measurement-context">First cut at half depth · 0.5 mm-thick blade</span></th><td>0.654 mm</td><td>4.059 mm</td></tr>
+              <tr data-measurement="volume"><th scope="row"><span class="measurement-name">Volume contraction</span><span class="measurement-context">Middle piece after both cuts</span></th><td>0.506%</td><td>8.746%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+<section class="citation-section wrap" id="bibtex-section" aria-labelledby="citation-title"><div class="result-heading"><h2 id="citation-title">BibTeX</h2><button id="copy-citation" type="button">Copy</button></div><pre id="bibtex">@misc{yang2026blademasterrealtimeroboticcutting,
+  title = {BladeMaster: Real-Time Robotic Cutting
+    Simulation with Online-Generated
+    Persistent Discontinuities},
+  author = {Zhanyu Yang and Yunuo Chen and
+    Yanjia Huang and Joseph Masterjohn and
+    Yin Yang and Chenfanfu Jiang},
+  year = {2026},
+  eprint = {2609.27342},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.RO},
+  url = {https://arxiv.org/abs/2609.27342}
+}</pre><p id="copy-status" class="sr-only" role="status"></p></section>
+  </main>
+  <footer class="wrap"><span>BladeMaster · 2026</span><a href="#top">Back to top ↑</a></footer>
+</body>
+</html>

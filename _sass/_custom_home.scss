@@ -453,7 +453,7 @@ $zy-wash: #fff3f1;
 
 .zy-publications {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
 }
 
@@ -475,6 +475,7 @@ $zy-wash: #fff3f1;
     height: 100%;
     display: block;
     object-fit: cover;
+    object-position: var(--teaser-position, 50% 50%);
     transition: transform 220ms ease;
   }
 }
@@ -628,6 +629,97 @@ $zy-wash: #fff3f1;
   }
 }
 
+// Desktop: one publication panel with compact, equally weighted rows.
+// Keep the existing image-first cards on tablets and phones.
+@media (min-width: 901px) {
+  .zy-publications {
+    gap: 0;
+    padding: 0 22px;
+    background: $zy-card;
+    border: 1px solid $zy-line;
+    border-radius: 18px;
+    box-shadow: 0 10px 28px rgba(63, 40, 28, 0.035);
+  }
+
+  .zy-pub-card {
+    display: grid;
+    grid-template-columns: minmax(0, 34%) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 22px;
+    padding: 22px 0;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+
+    & + & {
+      border-top: 1px solid $zy-line;
+    }
+  }
+
+  .zy-pub-card__image {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-self: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    position: relative;
+    min-height: 0;
+
+    img {
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  .zy-pub-card__body {
+    grid-column: 2;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .zy-pub-card__tag {
+    margin-bottom: 7px;
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .zy-pub-card h3 {
+    font-size: 18px;
+    line-height: 1.35;
+    text-wrap: pretty;
+  }
+
+  .zy-pub-card__authors,
+  .zy-pub-card__venue,
+  .zy-pub-card__award {
+    margin-top: 7px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .zy-pub-card__links {
+    grid-column: 2;
+    align-self: end;
+    margin: 0;
+    padding: 12px 0 0;
+    border: 0;
+    gap: 8px 14px;
+
+    a,
+    .is-disabled {
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    a {
+      color: $zy-red;
+    }
+  }
+}
+
 @media (max-width: 1180px) {
   .zy-shell {
     grid-template-columns: 260px minmax(0, 1fr);
@@ -651,9 +743,6 @@ $zy-wash: #fff3f1;
     grid-template-columns: 230px minmax(0, 1fr);
   }
 
-  .zy-publications {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 900px) {

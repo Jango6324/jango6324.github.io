@@ -67,8 +67,8 @@ layout: compress
                 I received my B.S. in Computational Mathematics from USTC in 2022.
               </p>
               <p>
-                My research interests lie in computer graphics, with a particular focus on physical simulation
-                and procedural modeling.
+                My research focuses on physics-based simulation and modeling for computer graphics and robotics.
+                I am particularly interested in how materials change shape and structure through physical processes and interactions.
               </p>
 
               <div class="zy-chips" aria-label="Quick profile facts">
@@ -117,48 +117,7 @@ layout: compress
 
           <div class="zy-publications">
             {% for pub in site.data.home_publications %}
-              {% assign project_url = pub.project_url | to_s | strip %}
-              {% assign paper_url = pub.paper_url | to_s | strip %}
-              {% assign video_url = pub.video_url | to_s | strip %}
-              {% assign bibtex_url = pub.bibtex_url | to_s | strip %}
-              <article class="zy-pub-card zy-card">
-                <a class="zy-pub-card__image" {% if project_url != '' %}href="{{ project_url | relative_url }}"{% elsif paper_url != '' %}href="{{ paper_url }}"{% endif %}>
-                  <img src="{{ pub.image | relative_url }}" alt="{{ pub.title }} thumbnail">
-                </a>
-                <div class="zy-pub-card__body">
-                  {% if pub.tag %}<span class="zy-pub-card__tag">{{ pub.tag }}</span>{% endif %}
-                  <h3>{{ pub.title }}</h3>
-                  {% assign highlighted_authors = pub.authors | replace_first: "Zhanyu Yang", "<strong>Zhanyu Yang</strong>" %}
-                  <p class="zy-pub-card__authors">{{ highlighted_authors }}</p>
-                  <p class="zy-pub-card__venue">{{ pub.venue }}</p>
-                  {% if pub.award %}<p class="zy-pub-card__award">🏆 {{ pub.award }}</p>{% endif %}
-                </div>
-                <div class="zy-pub-card__links">
-                  {% if project_url != '' %}
-                    <a href="{{ project_url | relative_url }}"><i class="fa-solid fa-link"></i> Project Page</a>
-                  {% else %}
-                    <span class="is-disabled" aria-disabled="true"><i class="fa-solid fa-link"></i> Project Page</span>
-                  {% endif %}
-
-                  {% if paper_url != '' %}
-                    <a href="{{ paper_url }}"><i class="fa-regular fa-file-lines"></i> Paper</a>
-                  {% else %}
-                    <span class="is-disabled" aria-disabled="true"><i class="fa-regular fa-file-lines"></i> Paper</span>
-                  {% endif %}
-
-                  {% if video_url != '' %}
-                    <a href="{{ video_url }}"><i class="fa-regular fa-circle-play"></i> Video</a>
-                  {% else %}
-                    <span class="is-disabled" aria-disabled="true"><i class="fa-regular fa-circle-play"></i> Video</span>
-                  {% endif %}
-
-                  {% if bibtex_url != '' %}
-                    <a href="{{ bibtex_url | relative_url }}"><i class="fa-solid fa-code"></i> BibTeX</a>
-                  {% else %}
-                    <span class="is-disabled" aria-disabled="true"><i class="fa-solid fa-code"></i> BibTeX</span>
-                  {% endif %}
-                </div>
-              </article>
+              {% include publication-entry.html pub=pub %}
             {% endfor %}
           </div>
         </section>
