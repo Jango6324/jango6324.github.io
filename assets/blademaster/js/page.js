@@ -1,6 +1,7 @@
-/* All scenes use the reviewed, native-resolution window exports. */
+/* Web-optimized 30 fps copies retain the reviewed crops and action timing. */
 const assetRoot = new URL("../", document.currentScript.src);
 const assetUrl = path => new URL(path, assetRoot).href;
+const frameDuration = 1 / 30;
 const library = new Map(window.CLIP_DATA.map(clip => [clip.id, clip]));
 const players = new Set();
 const playIcon = '<svg class="play-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor"/></svg>';
@@ -51,11 +52,16 @@ class Player {
       <div class="player-controls">
         <button class="play-button" type="button" aria-label="Play ${labels}">${playIcon}Play</button>
         <button class="replay-button" type="button" aria-label="Replay ${labels}" title="Replay">${replayIcon}</button>
-        <input class="seek" type="range" aria-label="Seek ${labels}" min="0" max="${this.duration}" value="0" step="0.0166667">
+        <input class="seek" type="range" aria-label="Seek ${labels}" min="0" max="${this.duration}" value="0" step="${frameDuration}">
         <span class="player-time">0:00 / ${clock(this.duration)}</span>
       </div>
       <div class="player-cue" role="status" aria-atomic="true" hidden><span class="cue-description"></span></div>`;
     this.videos = [...this.el.querySelectorAll('video')];
+    this.videos.forEach((video, index) => {
+      video.addEventListener('waiting', () => {
+        if (video.currentTime < this.panes[index].duration_seconds - frameDuration) this.rebuffer();
+      });
+    });
     this.leader = this.videos[panes.findIndex(item => item.duration_seconds === this.duration)];
     this.button = this.el.querySelector('.play-button');
     this.seek = this.el.querySelector('.seek');
@@ -99,10 +105,13 @@ class Player {
       const error = () => { clean(); reject(new Error('The video could not be loaded.')); };
       video.addEventListener('canplay', ready, {once:true});
       video.addEventListener('error', error, {once:true});
+      video.addEventListener('emptied', error, {once:true});
       // Setting preload is enough to start loading without resetting a live seek.
       video.preload = 'auto';
     });
-    return video.preparing;
+    // A resolved promise from the first load must not bypass later buffering.
+    try { await video.preparing; }
+    finally { video.preparing = null; }
   }
   pause() {
     this.request = (this.request || 0) + 1;
@@ -110,6 +119,13 @@ class Player {
     this.pending = false;
     this.videos.forEach(video => { video.pause(); video.playbackRate = 1; });
     if (this.button) { this.button.innerHTML = `${playIcon}Play`; this.button.setAttribute('aria-pressed','false'); }
+  }
+  rebuffer() {
+    if (!this.playing || this.pending || this.seeking) return;
+    // Freeze the group as soon as one pane runs out of frames. Resume through
+    // the normal readiness/seek path instead of repeatedly seeking that pane.
+    this.pause();
+    this.play();
   }
   async seekTo(time) {
     const version = this.version;
@@ -120,7 +136,7 @@ class Player {
       await Promise.all(videos.map(video => this.prepare(video)));
       if (version !== this.version || revision !== this.seekRevision) return;
       await Promise.all(videos.map((video,index) => {
-        const target = Math.min(time, this.panes[index].duration_seconds - 1/60);
+        const target = Math.min(time, this.panes[index].duration_seconds - frameDuration);
         if (Math.abs(video.currentTime - target) < .001 && !video.seeking) return;
         return new Promise(resolve => {
           video.addEventListener('seeked', resolve, {once:true});
@@ -145,7 +161,8 @@ class Player {
       await this.seekTo(current);
       if (version !== this.version || request !== this.request) return;
       await Promise.all(this.videos.map((video,index) => {
-        if (current < this.panes[index].duration_seconds - 1/60) return video.play();
+        video.lastCorrection = performance.now();
+        if (current < this.panes[index].duration_seconds - frameDuration) return video.play();
       }));
       if (version !== this.version || request !== this.request) return;
       this.playing = true;
@@ -183,17 +200,29 @@ class Player {
   tick() {
     if (!this.playing || this.seeking) return;
     const current = this.leader.currentTime;
+    if (this.videos.some((video, index) => current < this.panes[index].duration_seconds - frameDuration && video.readyState < 3)) {
+      this.rebuffer();
+      return;
+    }
+    const now = performance.now();
     this.videos.forEach((video,index) => {
       if (video === this.leader) return;
-      const end = this.panes[index].duration_seconds - 1/60;
+      const end = this.panes[index].duration_seconds - frameDuration;
       if (current >= end) {
         video.pause(); video.playbackRate = 1;
         if (Math.abs(video.currentTime - end) > .04 && !video.seeking) video.currentTime = end;
         return;
       }
+      if (video.seeking || this.leader.seeking) return;
       const drift = video.currentTime - current;
-      video.playbackRate = Math.abs(drift) > .035 ? (drift > 0 ? .98 : 1.02) : 1;
-      if (Math.abs(drift) > .15 && !video.seeking) video.currentTime = current;
+      const rate = Math.abs(drift) > .06 ? Math.max(.96, Math.min(1.04, 1 - drift * .2)) : 1;
+      if (video.playbackRate !== rate) video.playbackRate = rate;
+      // Reserve hard seeks for a substantial drift, at most once per two
+      // seconds. Small offsets recover smoothly without decoder resets.
+      if (Math.abs(drift) > .35 && now - video.lastCorrection >= 2000) {
+        video.lastCorrection = now;
+        video.currentTime = current;
+      }
     });
     this.update();
   }
