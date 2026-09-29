@@ -58,6 +58,12 @@ layout: compress
             <a class="zy-cv-button" href="{% if cv_temporarily_closed %}{{ unavailable_href }}{% else %}{{ cv_href }}{% endif %}" data-intended-href="{{ cv_href }}"><i class="fa-regular fa-file-lines"></i> CV</a>
           </div>
 
+          <aside class="zy-job-market" aria-label="Job availability">
+            <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+            <p><strong>I’m on the job market</strong> for positions starting in <strong>May 2027.</strong></p>
+            {% if author.email %}<a href="mailto:{{ author.email }}">Feel free to reach out <span aria-hidden="true">↗</span></a>{% endif %}
+          </aside>
+
           <div class="zy-hero__grid">
             <div class="zy-hero__copy">
               <h2>Hi, I’m Zhanyu!</h2>

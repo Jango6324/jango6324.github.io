@@ -720,6 +720,50 @@ $zy-wash: #fff3f1;
   }
 }
 
+.zy-job-market {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 20px 0 24px;
+  padding: 13px 16px;
+  background: $zy-wash;
+  border: 1px solid #efd0cc;
+  border-left: 3px solid $zy-red;
+  border-radius: 10px;
+  color: $zy-red-dark;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #67403b;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .zy-job-market {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: 0;
+
+    a {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+}
+
 @media (max-width: 1180px) {
   .zy-shell {
     grid-template-columns: 260px minmax(0, 1fr);
