@@ -15,9 +15,10 @@ title: "BladeMaster: Real-Time Robotic Cutting Simulation with Online-Generated 
   <link rel="icon" href="data:,">
   <link rel="preload" href="{{ '/assets/blademaster/fonts/source-sans-3-upright.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ '/assets/blademaster/fonts/instrument-sans-variable.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="{{ '/assets/blademaster/css/style.css' | relative_url }}">
-  <script src="{{ '/assets/blademaster/js/data.js' | relative_url }}?v=start-posters-1" defer></script>
-  <script src="{{ '/assets/blademaster/js/page.js' | relative_url }}?v=30fps-1" defer></script>
+  <link rel="stylesheet" href="{{ '/assets/blademaster/css/style.css' | relative_url }}?v=soul-1">
+  <script src="{{ '/assets/blademaster/js/data.js' | relative_url }}?v=demos-1" defer></script>
+  <script src="{{ '/assets/blademaster/js/page.js' | relative_url }}?v=30fps-2" defer></script>
+  <script src="{{ '/assets/blademaster/js/demos.js' | relative_url }}" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#results">Skip to results</a>
@@ -46,7 +47,20 @@ title: "BladeMaster: Real-Time Robotic Cutting Simulation with Online-Generated 
     <section class="results-section wrap" id="capabilities" aria-labelledby="capabilities-title">
       <h2 id="capabilities-title">Simulation Results</h2>
       <div class="result-block first" id="slicing">
-        <div class="result-heading"><h3>Sequential Slicing</h3></div>
+        <div class="result-heading">
+          <h3>Sequential Slicing</h3>
+          <button type="button" id="soul-switch" aria-controls="slicing-player" hidden>
+            <span class="soul-enter"><svg viewBox="0 0 28 20" width="24" height="18" fill="none" aria-hidden="true">
+              <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path fill="currentColor" fill-opacity=".12" d="M2 13Q8 10 13 4Q14 2.8 15 4Q20 10 26 13Q18 17 4 14Z"/>
+                <path d="M2 13Q14 16 26 13M13.5 5Q12 9 9 12"/>
+              </g>
+            </svg>A touch of Soul</span>
+            <span class="soul-exit"><svg viewBox="0 0 28 20" width="24" height="18" fill="none" aria-hidden="true">
+              <path d="m10 5-5 5 5 5M5 10h17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>Back to experiment</span>
+          </button>
+        </div>
         <div class="player" id="slicing-player" aria-label="Sequential slicing shown as simulated particles and a reconstructed surface"></div>
         <p class="caption">The knife cuts thin slices that topple under gravity and accumulate on the cutting board. Material below the blade remains connected until the cut is complete.</p>
       </div>
@@ -94,6 +108,21 @@ title: "BladeMaster: Real-Time Robotic Cutting Simulation with Online-Generated 
             </tbody>
           </table>
         </div>
+      </div>
+    </section>
+
+    <section class="results-section wrap" id="additional-demos" aria-labelledby="additional-title">
+      <h2 id="additional-title">Additional Demonstrations</h2>
+      <div class="result-block first">
+        <h3 id="mask-title">Intersecting Cuts on a Mask</h3>
+        <div class="player" id="mask-demo-player" aria-labelledby="mask-title"></div>
+        <p class="caption">The blade makes intersecting cuts in the mask while time is frozen. Each strike imparts an impulse to the particles it touches. When time resumes, the accumulated impulses send the fragments flying apart.</p>
+      </div>
+      <div class="result-block">
+        <h3 id="figure-title">A Second Cut in Midair</h3>
+        <div class="player" id="figure-demo-player" aria-labelledby="figure-title"></div>
+        <p class="caption">The first cut sends one piece tumbling through the air. The blade splits it again before it lands.</p>
+        <p class="demo-credit">Original demos by Zhanyu Yang, inspired by Phantom Blade Zero.</p>
       </div>
     </section>
 

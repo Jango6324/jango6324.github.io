@@ -149,5 +149,21 @@ footer { display:flex; justify-content:space-between; font-size:14px; color:var(
   .citation-section { margin-top:48px; }
   .citation-section pre { font-size:12px; padding:16px; }
 }
+#slicing .result-heading { align-items:center; gap:4px 12px; }
+#soul-switch:not([hidden]) { display:grid; min-height:44px; margin-left:auto; padding:0 2px; border:0; background:transparent; color:var(--muted); font:inherit; font-size:15px; }
+#soul-switch:hover, #soul-switch:focus-visible { color:var(--ink); }
+#soul-switch:hover span, #soul-switch:focus-visible span { text-decoration:underline; text-underline-offset:3px; }
+#soul-switch > span { grid-area:1/1; display:flex; align-items:center; justify-content:flex-end; gap:5px; }
+#soul-switch:not(.showing-soul) .soul-exit, #soul-switch.showing-soul .soul-enter { visibility:hidden; }
+.soul-stage { position:relative; }
+.soul-layout-guide { visibility:hidden; }
+.soul-stage > .panes:not(.soul-layout-guide) { position:absolute; inset:0; }
+.soul-stage > .panes:not(.soul-layout-guide) .pane-label { display:none; }
+.soul-stage .video-pane video { position:absolute; inset:0; height:100%; object-fit:cover; object-position:50% 28%; }
+@media(max-width:700px) {
+  .soul-stage .video-pane video { object-position:47.5% 50%; }
+}
+.demo-credit { color:var(--muted); margin-top:12px; font-size:15px; }
+
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
 @media print { .paper-header::before,.paper-header::after { display:none; } }

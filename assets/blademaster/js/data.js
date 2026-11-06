@@ -75,6 +75,14 @@ window.CLIP_DATA = [
         "duration_seconds": 14.833333333333334,
         "file": "videos/03-sequential-slicing-mesh-30fps.mp4",
         "poster": "posters/03-sequential-slicing-mesh-start.jpg"
+      },
+      {
+        "id": "soul",
+        "width": 1476,
+        "height": 720,
+        "duration_seconds": 14.266667,
+        "file": "videos/03-sequential-slicing-soul-30fps.mp4",
+        "poster": "posters/03-sequential-slicing-soul-start.jpg"
       }
     ]
   },
@@ -222,6 +230,48 @@ window.CLIP_DATA = [
         "duration_seconds": 21.233333333333334,
         "file": "videos/10-cressim-mpm-comparison-cressim-mpm-30fps.mp4",
         "poster": "posters/10-cressim-mpm-comparison-cressim-mpm-start.jpg"
+      }
+    ]
+  },
+  {
+    "id": "11-mask",
+    "windows": [
+      {
+        "id": "stylized",
+        "width": 960,
+        "height": 540,
+        "duration_seconds": 9.1,
+        "file": "videos/11-mask-stylized-30fps.mp4",
+        "poster": "posters/11-mask-stylized-start.jpg"
+      },
+      {
+        "id": "lab",
+        "width": 960,
+        "height": 540,
+        "duration_seconds": 9.1,
+        "file": "videos/11-mask-lab-30fps.mp4",
+        "poster": "posters/11-mask-lab-start.jpg"
+      }
+    ]
+  },
+  {
+    "id": "12-midair",
+    "windows": [
+      {
+        "id": "stylized",
+        "width": 960,
+        "height": 540,
+        "duration_seconds": 4.2,
+        "file": "videos/12-midair-stylized-30fps.mp4",
+        "poster": "posters/12-midair-stylized-start.jpg"
+      },
+      {
+        "id": "lab",
+        "width": 960,
+        "height": 540,
+        "duration_seconds": 4.2,
+        "file": "videos/12-midair-lab-30fps.mp4",
+        "poster": "posters/12-midair-lab-start.jpg"
       }
     ]
   }

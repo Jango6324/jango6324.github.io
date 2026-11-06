@@ -59,7 +59,7 @@ class Player {
     this.videos = [...this.el.querySelectorAll('video')];
     this.videos.forEach((video, index) => {
       video.addEventListener('waiting', () => {
-        if (video.currentTime < this.panes[index].duration_seconds - frameDuration) this.rebuffer();
+        if (video === this.videos[index] && video.currentTime < this.panes[index].duration_seconds - frameDuration) this.rebuffer();
       });
     });
     this.leader = this.videos[panes.findIndex(item => item.duration_seconds === this.duration)];
@@ -311,19 +311,20 @@ document.querySelectorAll('[data-banana]').forEach((button,index) => {
 // Let the results move while they are in view; only one synchronized group
 // runs at a time. An explicit pause remains respected until the user plays.
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const observedPlayers = [...players];
   const visibility = new Map();
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => visibility.set(entry.target,entry.intersectionRatio));
     if (document.hidden) return;
-    const candidates = [...players].filter(player => (visibility.get(player.el) || 0) > .4);
+    const candidates = observedPlayers.filter(player => (visibility.get(player.el) || 0) > .4);
     candidates.sort((a,b) => Math.abs(a.el.getBoundingClientRect().top + Math.min(a.el.clientHeight,innerHeight)/2-innerHeight/2) - Math.abs(b.el.getBoundingClientRect().top + Math.min(b.el.clientHeight,innerHeight)/2-innerHeight/2));
     const active = candidates[0];
-    players.forEach(player => {
+    observedPlayers.forEach(player => {
       if (player !== active && (player.playing || player.pending) && (visibility.get(player.el)||0) < .15) player.pause();
     });
     if (active && !active.userPaused && !active.playing && !active.pending) active.play();
   }, {threshold:[0,.15,.4,.6,.85,1]});
-  players.forEach(player => observer.observe(player.el));
+  observedPlayers.forEach(player => observer.observe(player.el));
 }
 document.getElementById('copy-citation').addEventListener('click', async event => {
   const button = event.currentTarget;
