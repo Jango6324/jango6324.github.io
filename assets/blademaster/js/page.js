@@ -90,6 +90,37 @@ function startMedia(video, signal) {
   });
 }
 
+function waitForBuffer(video, time, end, signal) {
+  return new Promise((resolve, reject) => {
+    const ready = () => {
+      if (video.seeking || video.readyState < 2) return false;
+      if (time >= end - frameDuration) return true;
+      const target = Math.min(end, time + .5);
+      for (let index = 0; index < video.buffered.length; index++) {
+        if (video.buffered.start(index) <= time + frameDuration && video.buffered.end(index) >= target) return true;
+      }
+      return false;
+    };
+    const finish = error => {
+      clearInterval(poll);
+      clearTimeout(timeout);
+      video.removeEventListener('error', failed);
+      signal.removeEventListener('abort', canceled);
+      error ? reject(error) : resolve();
+    };
+    const check = () => { if (ready()) finish(); };
+    const failed = () => finish(new Error('The video could not be loaded.'));
+    const canceled = () => finish(new DOMException('Playback canceled.', 'AbortError'));
+    const poll = setInterval(check, 100);
+    const timeout = setTimeout(() => finish(new Error('The video took too long to buffer.')), 20000);
+    video.addEventListener('error', failed, {once:true});
+    signal.addEventListener('abort', canceled, {once:true});
+    if (signal.aborted) canceled();
+    else if (video.error) failed();
+    else check();
+  });
+}
+
 class Player {
   constructor(id) {
     this.el = document.getElementById(id);
@@ -167,6 +198,7 @@ class Player {
       catch (error) { if (version === this.version) this.fail(error); }
     };
     this.leader.addEventListener('ended', () => {
+      if (this.pending) return;
       const loop = this.playing && !this.userPaused;
       this.pause(); this.update();
       if (loop) this.play();
@@ -188,15 +220,20 @@ class Player {
     this.seekController?.abort();
     this.playing = false;
     this.pending = false;
+    this.launching = false;
+    this.progress = null;
     this.videos.forEach(video => { video.pause(); video.playbackRate = 1; });
     if (this.button) { this.button.innerHTML = `${playIcon}Play`; this.button.setAttribute('aria-pressed','false'); }
   }
   rebuffer() {
-    if (!this.playing || this.pending || this.seeking) return;
-    // Freeze the group as soon as one pane runs out of frames. Resume through
-    // the normal readiness/seek path instead of repeatedly seeking that pane.
+    if ((!this.playing && !this.launching) || this.seeking) return;
+    const current = this.pending ? this.pendingTime : this.leader.currentTime;
+    // Resume from the last position shared by all unfinished panes, rather than
+    // seeking the stalled pane farther into data it has not downloaded yet.
+    const time = Math.min(current, ...this.videos.flatMap((video, index) =>
+      current < this.panes[index].duration_seconds - frameDuration ? [video.currentTime] : []));
     this.pause();
-    this.play();
+    this.play(time, true);
   }
   async seekTo(time) {
     this.seekController?.abort();
@@ -220,7 +257,7 @@ class Player {
       if (version === this.version && revision === this.seekRevision) this.seeking = false;
     }
   }
-  async play(fromTime) {
+  async play(fromTime, bufferFirst = false) {
     if (this.pending) return;
     players.forEach(other => { if (other !== this) other.pause(); });
     const version = this.version;
@@ -228,30 +265,56 @@ class Player {
     const controller = new AbortController();
     this.playController = controller;
     this.pending = true;
+    this.launching = false;
+    this.progress = null;
     this.button.innerHTML = '<span class="play-icon" aria-hidden="true">·</span>Loading';
     try {
-      const current = fromTime ?? (this.leader.currentTime >= this.duration - .06 ? 0 : this.leader.currentTime);
-      await Promise.all(this.videos.map((video,index) => {
-        // Call play before any await, while a tap still grants playback permission.
-        // Mobile Safari may defer buffering until this explicit request.
+      let current = fromTime ?? (this.leader.currentTime >= this.duration - .06 ? 0 : this.leader.currentTime);
+      this.pendingTime = current;
+      this.update();
+      const active = () => version === this.version && request === this.request;
+      const needsWarmup = !bufferFirst && this.videos.some(video => video.readyState < 3 || video.seeking);
+      const start = hold => Promise.all(this.videos.map((video,index) => {
         video.muted = true;
         video.defaultMuted = true;
         video.playsInline = true;
         video.preload = 'auto';
         if (video.error) video.load();
-        video.lastCorrection = performance.now();
         const target = Math.max(0, Math.min(current, this.panes[index].duration_seconds - frameDuration));
         if (video.readyState >= 1 && Math.abs(video.currentTime - target) > .001) video.currentTime = target;
-        if (current >= this.panes[index].duration_seconds - frameDuration) return;
-        return startMedia(video, controller.signal);
+        if (current >= this.panes[index].duration_seconds - frameDuration) { video.pause(); return; }
+        return startMedia(video, controller.signal).then(() => {
+          // A fast pane must not run ahead while a slower pane is still opening.
+          if (hold && active()) video.pause();
+        });
       }));
-      if (version !== this.version || request !== this.request) return;
-      // Avoid an extra rewind after WeChat grants playback permission.
-      // Keep ordinary startup continuous; correct material drift in tick().
-      // A newly created scene still needs its requested position on a view switch.
-      if (!isWeChat || fromTime > 0) await this.seekTo(current);
-      if (version !== this.version || request !== this.request) return;
+      if (!bufferFirst) {
+        // First-time play stays synchronous with the tap for Safari/WeChat.
+        // Only after every pane is activated may we hold the group for buffering.
+        this.launching = !needsWarmup;
+        await start(needsWarmup);
+        if (!active()) return;
+        if (needsWarmup && isWeChat && fromTime === undefined) {
+          // Keep WeChat's first activated frame instead of rewinding immediately.
+          current = Math.min(...this.videos.map(video => video.currentTime));
+          this.pendingTime = current;
+        }
+      }
+      if (needsWarmup || bufferFirst) {
+        await this.seekTo(current);
+        if (!active()) return;
+        await Promise.all(this.videos.map((video,index) => waitForBuffer(video,
+          Math.min(current, this.panes[index].duration_seconds - frameDuration),
+          this.panes[index].duration_seconds, controller.signal)));
+        if (!active()) return;
+        this.launching = true;
+        await start(false);
+        if (!active()) return;
+      }
       this.playing = true;
+      this.pending = false;
+      this.launching = false;
+      this.progress = this.videos.map(video => ({time:video.currentTime, advancedAt:performance.now()}));
       this.button.innerHTML = `${pauseIcon}Pause`;
       this.button.setAttribute('aria-pressed','true');
       this.update();
@@ -273,7 +336,7 @@ class Player {
     if (error.name !== 'NotAllowedError') console.error(error);
   }
   update() {
-    const current = this.leader.currentTime || 0;
+    const current = this.pending ? this.pendingTime : (this.leader.currentTime || 0);
     if (!this.seeking) this.seek.value = current;
     this.seek.style.setProperty('--played',`${100 * current / this.duration}%`);
     this.time.textContent = `${clock(current)} / ${clock(this.duration)}`;
@@ -290,11 +353,22 @@ class Player {
   tick() {
     if (!this.playing || this.seeking) return;
     const current = this.leader.currentTime;
-    if (this.videos.some((video, index) => current < this.panes[index].duration_seconds - frameDuration && video.readyState < 2)) {
+    const now = performance.now();
+    if (!this.progress) this.progress = this.videos.map(video => ({time:video.currentTime, advancedAt:now}));
+    const stalled = this.videos.some((video, index) => {
+      if (current >= this.panes[index].duration_seconds - frameDuration) return false;
+      const progress = this.progress[index];
+      if (Math.abs(video.currentTime - progress.time) >= frameDuration / 2) {
+        progress.time = video.currentTime;
+        progress.advancedAt = now;
+      }
+      return video.readyState < 2 || video.paused || now - progress.advancedAt > 650 ||
+        Math.abs(video.currentTime - current) > .35;
+    });
+    if (stalled) {
       this.rebuffer();
       return;
     }
-    const now = performance.now();
     this.videos.forEach((video,index) => {
       if (video === this.leader) return;
       const end = this.panes[index].duration_seconds - frameDuration;
@@ -307,12 +381,6 @@ class Player {
       const drift = video.currentTime - current;
       const rate = Math.abs(drift) > .06 ? Math.max(.96, Math.min(1.04, 1 - drift * .2)) : 1;
       if (video.playbackRate !== rate) video.playbackRate = rate;
-      // Reserve hard seeks for a substantial drift, at most once per two
-      // seconds. Small offsets recover smoothly without decoder resets.
-      if (Math.abs(drift) > .35 && now - video.lastCorrection >= 2000) {
-        video.lastCorrection = now;
-        video.currentTime = current;
-      }
     });
     this.update();
   }
