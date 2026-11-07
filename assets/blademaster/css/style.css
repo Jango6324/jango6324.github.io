@@ -164,6 +164,9 @@ footer { display:flex; justify-content:space-between; font-size:14px; color:var(
   .soul-stage .video-pane video { object-position:47.5% 50%; }
 }
 .demo-credit { color:var(--muted); margin-top:12px; font-size:15px; }
+.bonus-video-entry { display:flex; justify-content:center; margin:-10px 0 30px; }
+.bonus-video-entry a { display:inline-flex; align-items:center; gap:9px; min-height:44px; padding:7px 16px; border:1px solid #aab1b7; border-radius:3px; color:var(--ink); font-size:17px; font-weight:500; line-height:1.5; }
+.bonus-video-entry a:hover { background:#f5f6f7; border-color:var(--ink); text-decoration:none; }
 
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
 @media print { .paper-header::before,.paper-header::after { display:none; } }
