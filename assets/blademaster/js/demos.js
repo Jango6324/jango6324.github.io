@@ -40,20 +40,28 @@ function bindSoulSwitch() {
     }
     slicing.userPaused = true;
     const request = slicing.request;
-    switching = {request, labPosition:position, resume, userPaused};
+    const transition = {request, labPosition:position, resume, userPaused};
+    switching = transition;
     button.classList.toggle('showing-soul', toSoul);
     slicing.el.setAttribute('aria-label', toSoul ? 'Sequential slicing with Soul Franka' : labLabel);
     button.title = toSoul ? 'Return to the particle and surface views' : 'See this cut with Soul Franka';
     try {
-      await slicing.seekTo(toSoul ? soulTime(position) : position);
-      if (request !== slicing.request) return;
-      slicing.update();
-      slicing.userPaused = userPaused;
-      if (resume) await slicing.play();
+      const target = toSoul ? soulTime(position) : position;
+      if (resume) {
+        slicing.userPaused = userPaused;
+        const playback = slicing.play(target);
+        transition.request = slicing.request;
+        await playback;
+      } else {
+        await slicing.seekTo(target);
+        if (request !== slicing.request) return;
+        slicing.update();
+        slicing.userPaused = userPaused;
+      }
     } catch (error) {
       if (request === slicing.request) slicing.fail(error);
     } finally {
-      if (switching?.request === request) switching = null;
+      if (switching === transition) switching = null;
     }
   });
 }

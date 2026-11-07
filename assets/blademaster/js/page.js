@@ -15,6 +15,28 @@ const pane = (id, windowId, label, ours = false) => {
   return {...window, label, ours};
 };
 
+function waitForMedia(video, event, signal, ready = () => false) {
+  return new Promise((resolve, reject) => {
+    const finish = error => {
+      clearTimeout(timeout);
+      video.removeEventListener(event, loaded);
+      video.removeEventListener('error', failed);
+      signal?.removeEventListener('abort', canceled);
+      error ? reject(error) : resolve();
+    };
+    const loaded = () => finish();
+    const failed = () => finish(new Error('The video could not be loaded.'));
+    const canceled = () => finish(new DOMException('Playback canceled.', 'AbortError'));
+    const timeout = setTimeout(() => finish(new Error('The video took too long to load.')), 20000);
+    video.addEventListener(event, loaded, {once:true});
+    video.addEventListener('error', failed, {once:true});
+    signal?.addEventListener('abort', canceled, {once:true});
+    if (signal?.aborted) canceled();
+    else if (video.error) failed();
+    else if (ready()) loaded();
+  });
+}
+
 class Player {
   constructor(id) {
     this.el = document.getElementById(id);
@@ -73,12 +95,10 @@ class Player {
       this.userPaused = this.playing || this.pending;
       this.userPaused ? this.pause() : this.play();
     };
-    this.el.querySelector('.replay-button').onclick = async () => {
+    this.el.querySelector('.replay-button').onclick = () => {
       this.userPaused = false;
       this.pause();
-      const version = this.version;
-      try { await this.seekTo(0); if (version === this.version) await this.play(); }
-      catch (error) { if (version === this.version) this.fail(error); }
+      this.play(0);
     };
     this.seek.oninput = async () => {
       const target = Number(this.seek.value);
@@ -96,25 +116,18 @@ class Player {
     this.update();
     if (resume) this.play();
   }
-  async prepare(video) {
-    if (video.readyState >= 3) return;
-    if (video.preparing) return video.preparing;
-    video.preparing = new Promise((resolve, reject) => {
-      const clean = () => { video.removeEventListener('canplay', ready); video.removeEventListener('error', error); video.removeEventListener('emptied', error); };
-      const ready = () => { clean(); resolve(); };
-      const error = () => { clean(); reject(new Error('The video could not be loaded.')); };
-      video.addEventListener('canplay', ready, {once:true});
-      video.addEventListener('error', error, {once:true});
-      video.addEventListener('emptied', error, {once:true});
-      // Setting preload is enough to start loading without resetting a live seek.
-      video.preload = 'auto';
-    });
-    // A resolved promise from the first load must not bypass later buffering.
-    try { await video.preparing; }
-    finally { video.preparing = null; }
+  async prepare(video, signal) {
+    if (video.error) video.load();
+    if (video.readyState >= 1) return;
+    const metadata = waitForMedia(video, 'loadedmetadata', signal, () => video.readyState >= 1);
+    video.preload = 'auto';
+    if (video.networkState !== 2) video.load();
+    await metadata;
   }
   pause() {
     this.request = (this.request || 0) + 1;
+    this.playController?.abort();
+    this.seekController?.abort();
     this.playing = false;
     this.pending = false;
     this.videos.forEach(video => { video.pause(); video.playbackRate = 1; });
@@ -128,42 +141,55 @@ class Player {
     this.play();
   }
   async seekTo(time) {
+    this.seekController?.abort();
+    const controller = new AbortController();
+    this.seekController = controller;
     const version = this.version;
     const revision = ++this.seekRevision;
     const videos = [...this.videos];
     this.seeking = true;
     try {
-      await Promise.all(videos.map(video => this.prepare(video)));
+      await Promise.all(videos.map(video => this.prepare(video, controller.signal)));
       if (version !== this.version || revision !== this.seekRevision) return;
       await Promise.all(videos.map((video,index) => {
         const target = Math.min(time, this.panes[index].duration_seconds - frameDuration);
         if (Math.abs(video.currentTime - target) < .001 && !video.seeking) return;
-        return new Promise(resolve => {
-          video.addEventListener('seeked', resolve, {once:true});
-          video.currentTime = Math.max(0, target);
-        });
+        const seeked = waitForMedia(video, 'seeked', controller.signal);
+        video.currentTime = Math.max(0, target);
+        return seeked;
       }));
     } finally {
       if (version === this.version && revision === this.seekRevision) this.seeking = false;
     }
   }
-  async play() {
+  async play(fromTime) {
     if (this.pending) return;
     players.forEach(other => { if (other !== this) other.pause(); });
     const version = this.version;
     const request = ++this.request;
+    const controller = new AbortController();
+    this.playController = controller;
     this.pending = true;
     this.button.innerHTML = '<span class="play-icon" aria-hidden="true">·</span>Loading';
     try {
-      await Promise.all(this.videos.map(video => this.prepare(video)));
-      if (version !== this.version || request !== this.request) return;
-      const current = this.leader.currentTime >= this.duration - .06 ? 0 : this.leader.currentTime;
-      await this.seekTo(current);
-      if (version !== this.version || request !== this.request) return;
+      const current = fromTime ?? (this.leader.currentTime >= this.duration - .06 ? 0 : this.leader.currentTime);
       await Promise.all(this.videos.map((video,index) => {
+        // Call play before any await, while a tap still grants playback permission.
+        // Mobile Safari may defer buffering until this explicit request.
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = 'auto';
+        if (video.error) video.load();
         video.lastCorrection = performance.now();
-        if (current < this.panes[index].duration_seconds - frameDuration) return video.play();
+        const target = Math.max(0, Math.min(current, this.panes[index].duration_seconds - frameDuration));
+        if (video.readyState >= 1 && Math.abs(video.currentTime - target) > .001) video.currentTime = target;
+        if (current >= this.panes[index].duration_seconds - frameDuration) return;
+        const started = waitForMedia(video, 'playing', controller.signal,
+          () => !video.paused && video.readyState >= 3);
+        return Promise.all([started, video.play()]);
       }));
+      if (version !== this.version || request !== this.request) return;
+      await this.seekTo(current);
       if (version !== this.version || request !== this.request) return;
       this.playing = true;
       this.button.innerHTML = `${pauseIcon}Pause`;
@@ -176,11 +202,15 @@ class Player {
     }
   }
   fail(error) {
+    if (error.name === 'AbortError') return;
     this.pause();
+    this.userPaused = true;
     this.activeCue = null;
     this.cue.hidden = false;
-    this.cueDescription.textContent = 'Video could not be loaded. Please try again.';
-    console.error(error);
+    this.cueDescription.textContent = error.name === 'NotAllowedError'
+      ? 'Tap Play to start the video.'
+      : 'Video could not be loaded. Tap Play to try again.';
+    if (error.name !== 'NotAllowedError') console.error(error);
   }
   update() {
     const current = this.leader.currentTime || 0;
@@ -200,7 +230,7 @@ class Player {
   tick() {
     if (!this.playing || this.seeking) return;
     const current = this.leader.currentTime;
-    if (this.videos.some((video, index) => current < this.panes[index].duration_seconds - frameDuration && video.readyState < 3)) {
+    if (this.videos.some((video, index) => current < this.panes[index].duration_seconds - frameDuration && video.readyState < 2)) {
       this.rebuffer();
       return;
     }
