@@ -4,6 +4,7 @@ const assetUrl = path => new URL(path, assetRoot).href;
 const frameDuration = 1 / 30;
 const library = new Map(window.CLIP_DATA.map(clip => [clip.id, clip]));
 const players = new Set();
+const isWeChat = /MicroMessenger/i.test(window.navigator?.userAgent || '');
 const playIcon = '<svg class="play-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor"/></svg>';
 const pauseIcon = '<svg class="play-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3v10M11 3v10" stroke="currentColor" stroke-width="2.5"/></svg>';
 const replayIcon = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.2 5.9A7 7 0 1 1 3 10M4.2 2v4.5H.5"/></svg>';
@@ -37,6 +38,58 @@ function waitForMedia(video, event, signal, ready = () => false) {
   });
 }
 
+function startMedia(video, signal) {
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    let bridgeRequested = false;
+    const finish = error => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      video.removeEventListener('playing', started);
+      video.removeEventListener('error', failed);
+      document.removeEventListener('WeixinJSBridgeReady', bridgeReady);
+      signal.removeEventListener('abort', canceled);
+      error ? reject(error) : resolve();
+    };
+    const started = () => finish();
+    const failed = () => finish(new Error('The video could not be loaded.'));
+    const canceled = () => finish(new DOMException('Playback canceled.', 'AbortError'));
+    const attempt = (fromBridge = false) => {
+      if (settled || signal.aborted) return;
+      const rejected = error => {
+        // Give the host callback a chance if its normal playback request was denied.
+        if (!fromBridge && error.name === 'NotAllowedError' && bridgeRequested) return;
+        finish(error);
+      };
+      try { video.play()?.then(started, rejected); }
+      catch (error) { rejected(error); }
+    };
+    const bridgeReady = () => {
+      const bridge = window.WeixinJSBridge;
+      if (settled || signal.aborted || bridgeRequested || !bridge?.invoke) return;
+      bridgeRequested = true;
+      try {
+        // Retry only this requested video inside WeChat's host callback.
+        // The network-type result is deliberately unused.
+        bridge.invoke('getNetworkType', {}, () => attempt(true));
+      } catch { bridgeRequested = false; }
+    };
+    const timeout = setTimeout(() => finish(new Error('The video took too long to load.')), 20000);
+    video.addEventListener('playing', started, {once:true});
+    video.addEventListener('error', failed, {once:true});
+    signal.addEventListener('abort', canceled, {once:true});
+    if (signal.aborted) { canceled(); return; }
+    // Keep the first play() synchronous with the user's tap. Either the playing
+    // event or the native promise can confirm success, under the same deadline.
+    attempt();
+    if (isWeChat && !settled) {
+      document.addEventListener('WeixinJSBridgeReady', bridgeReady);
+      bridgeReady();
+    }
+  });
+}
+
 class Player {
   constructor(id) {
     this.el = document.getElementById(id);
@@ -65,7 +118,7 @@ class Player {
     this.el.innerHTML = `
       <div class="panes" style="--columns:${panes.length};--pane-columns:${panes.map(item => (item.width/item.height)+'fr').join(' ')}">
         ${panes.map(item => `<div class="video-pane">
-          <video muted playsinline preload="none" width="${item.width}" height="${item.height}"
+          <video muted playsinline webkit-playsinline preload="none" width="${item.width}" height="${item.height}"
             style="--video-ratio:${item.width}/${item.height}" aria-label="${item.label}"
             poster="${assetUrl(item.poster)}" src="${assetUrl(item.file)}"></video>
           <span class="pane-label ${item.ours ? 'ours' : ''}">${item.label}</span>
@@ -92,8 +145,13 @@ class Player {
     this.cueDescription = this.cue.querySelector('.cue-description');
     this.measurementRows = [...(this.el.closest('.result-block')?.querySelectorAll('[data-measurement]') || [])];
     this.button.onclick = () => {
-      this.userPaused = this.playing || this.pending;
-      this.userPaused ? this.pause() : this.play();
+      this.userPaused = this.playing;
+      if (this.playing) this.pause();
+      else {
+        // A fresh tap must retry a pending request with fresh user activation.
+        if (this.pending) this.pause();
+        this.play();
+      }
     };
     this.el.querySelector('.replay-button').onclick = () => {
       this.userPaused = false;
@@ -177,6 +235,7 @@ class Player {
         // Call play before any await, while a tap still grants playback permission.
         // Mobile Safari may defer buffering until this explicit request.
         video.muted = true;
+        video.defaultMuted = true;
         video.playsInline = true;
         video.preload = 'auto';
         if (video.error) video.load();
@@ -184,12 +243,13 @@ class Player {
         const target = Math.max(0, Math.min(current, this.panes[index].duration_seconds - frameDuration));
         if (video.readyState >= 1 && Math.abs(video.currentTime - target) > .001) video.currentTime = target;
         if (current >= this.panes[index].duration_seconds - frameDuration) return;
-        const started = waitForMedia(video, 'playing', controller.signal,
-          () => !video.paused && video.readyState >= 3);
-        return Promise.all([started, video.play()]);
+        return startMedia(video, controller.signal);
       }));
       if (version !== this.version || request !== this.request) return;
-      await this.seekTo(current);
+      // Avoid an extra rewind after WeChat grants playback permission.
+      // Keep ordinary startup continuous; correct material drift in tick().
+      // A newly created scene still needs its requested position on a view switch.
+      if (!isWeChat || fromTime > 0) await this.seekTo(current);
       if (version !== this.version || request !== this.request) return;
       this.playing = true;
       this.button.innerHTML = `${pauseIcon}Pause`;
@@ -352,7 +412,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     observedPlayers.forEach(player => {
       if (player !== active && (player.playing || player.pending) && (visibility.get(player.el)||0) < .15) player.pause();
     });
-    if (active && !active.userPaused && !active.playing && !active.pending) active.play();
+    if (!isWeChat && active && !active.userPaused && !active.playing && !active.pending) active.play();
   }, {threshold:[0,.15,.4,.6,.85,1]});
   observedPlayers.forEach(player => observer.observe(player.el));
 }
